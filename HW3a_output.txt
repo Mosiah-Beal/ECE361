@@ -1,0 +1,71 @@
+bash-4.2$ whoami
+mosiah
+bash-4.2$ gcc -Wall -std=c99 -o hw3 HW3a.c
+bash-4.2$ ./hw3
+Sort up to 50 words of length 20 at a time (mosiah@pdx.edu)
+Current working directory: /home/mosiah/common/Desktop/ECE 361/HW3
+
+Input Stream:
+hello
+Roy
+how  
+are
+you
+I  
+am
+quite
+sleepy
+after 
+several
+long
+nights
+which
+were
+spent
+on
+labwork
+Going
+to
+bed
+at
+1:00
+am
+is
+not
+ideal
+
+
+In sorted order: 
+ 1:00
+ Going
+ I
+ Roy
+ after
+ am
+ am
+ are
+ at
+ bed
+ hello
+ how
+ ideal
+ is
+ labwork
+ long
+ nights
+ not
+ on
+ quite
+ several
+ sleepy
+ spent
+ to
+ were
+ which
+ you
+
+Exiting word sorting application
+bash-4.2$ echo "I am assuming that I don't need to send the words to lowercase/uppercase and that qsort is supposed to distinguish between Capitalized and lowercase words"
+
+I am assuming that I don't need to send the words to lowercase/uppercase and that qsort is supposed to distinguish between Capitalized and lowercase words
+bash-4.2$
