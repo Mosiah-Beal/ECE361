@@ -16,6 +16,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <errno.h>
+#include <time.h>
 
 #include "longestLineHelper.h"
 #include "colors.h"
@@ -38,6 +39,7 @@ iodata_t data[MAX_DATA_ITEMS];	// array to hold switch and duty cycle data
 // helper function prototypes
 int populate_data_array(void);
 void print_dir(void);
+int random_value(int range);
 
 // main()
 int main() {
@@ -46,14 +48,23 @@ int main() {
 	int num_items;
 		 
 	// greet the user and display the working directory for the application
-    printf("Trial Run (mosiah@pdx.edu)\n");
+    printf("Embedded System Programmer at your service (mosiah@pdx.edu)\n");
     print_dir();
 	 
 	// ADD YOUR CODE TO INITIALIZE iom361
 	io_base = iom361_initialize(NUM_SWITCHES, NUM_LEDS, &rtn_code);
-	//add error checking to see if initilization was successful
+	if(rtn_code != 0){
+		printf("FATAL(main): Could not initialize I/O module\n");
+		return 1;
+	}
+	else
+	{
+		printf("I/O register block initialized successfully\nSimulating with %d switches and %d LEDs\n", NUM_SWITCHES, NUM_LEDS);
+	}
+	
 	
 	// get the "hardwired" data
+	srand(time(NULL));   // Initializing random number generator
 	num_items = populate_data_array();
 	
 	// display the contents of the data array
@@ -68,20 +79,28 @@ int main() {
 		dcg = data[i].rgb.green;
 		dcb = data[i].rgb.blue;
 		printf("INFO[main()]:  Retrieved item[%d] sw=%08x, duty cycles= {%d, %d, %d}\n",
-				num_items, sw, dcr, dcg, dcb);
+				i, sw, dcr, dcg, dcb);
 	}
 	printf("INFO(main()]: There are %d data items to send to I/O module\n", num_items);
 	
 	// sending the data to the iom361 peripheral registers
 	for (int i = 0; i < num_items; i++) {
 		// ADD YOUR CODE TO SEND DATA TO iom361 peripheral registers
+		printf("\nSENDING ITEM %d to I/O MODULE...\n", i);
 		
 		// Set switch register
-		printf("\tsetting switches to %8X\n", data[i].sw); 
-		_iom361_setSwitches(reg_value);
+		//printf("\tsetting switches to %08X\n", data[i].sw); 
+		_iom361_setSwitches(data[i].sw);
 		reg_value = iom361_readReg(io_base, SWITCHES_REG, NULL);
 		iom361_writeReg(io_base, LEDS_REG, reg_value, NULL);
 		
+		// Set RGB register
+		reg_value = makeRGBLedReg(data[i].rgb, true);
+		//printf("\tsetting RGB value to %08X\n", reg_value);
+		iom361_writeReg(io_base, RGB_LED_REG, reg_value, &rtn_code);
+		if (rtn_code != 0) {
+			printf("ERROR(main): Could not write RGB LED register\n");
+		}
 		
 		sleep(3);
 	}
@@ -119,8 +138,41 @@ int populate_data_array(void) {
 	++num_items;
 	
 	// ADD YOUR TEST CASES HERE
+	data[5].sw = 0x00000000;
+	data[5].rgb.red = random_value(256); 
+	data[5].rgb.green = random_value(256); 
+	data[5].rgb.blue = random_value(256);
+	++num_items;
+	
+	data[6].sw = 0xFFFF;
+	data[6].rgb.red = random_value(256); 
+	data[6].rgb.green = random_value(256); 
+	data[6].rgb.blue = random_value(256);
+	++num_items;
+	
+	data[7].sw = 0x000F;
+	data[7].rgb.red = random_value(256); 
+	data[7].rgb.green = random_value(256); 
+	data[7].rgb.blue = random_value(256);
+	++num_items;
+	
+	data[8].sw = 0x4AC8;
+	data[8].rgb.red = random_value(256); 
+	data[8].rgb.green = random_value(256); 
+	data[8].rgb.blue = random_value(256);
+	++num_items;
+	
+	data[9].sw = 0x5A5A;
+	data[9].rgb.red = random_value(256); 
+	data[9].rgb.green = random_value(256); 
+	data[9].rgb.blue = random_value(256);
+	++num_items;
 	
 	return num_items; 	
+}
+
+int random_value(int range){
+	return (int) (rand() % range);
 }
 
 void print_dir(void)

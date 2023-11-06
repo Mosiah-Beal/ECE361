@@ -1,0 +1,147 @@
+bash-4.2$ whoami
+mosiah
+bash-4.2$ ls
+colors.c  HW3b.c    iom361.h		 longestLineHelper.o  test2
+colors.h  iom361.c  longestLineHelper.h  test
+
+
+bash-4.2$ echo "This is run #1"
+This is run #1
+bash-4.2$ gcc -Wall -std=c99 -lm -o hw3 *.c
+iom361.c: In function ‘_iom361_setSensor1’:
+iom361.c:190:28: warning: initializer element is not a constant expression [enabled by default]
+  static float temp_const = powf(2, 20) / 200.0;
+                            ^
+iom361.c:191:26: warning: initializer element is not a constant expression [enabled by default]
+  static float rh_const = powf(2,20) / 100.0;
+                          ^
+bash-4.2$ ./hw3
+Embedded System Programmer at your service (mosiah@pdx.edu)
+Current working directory: /home/mosiah/common/Desktop/ECE 361/HW3/HW3b
+
+  ____  ____  ____  ____
+RedDC= 0% (  0), GrnDC= 0% (  0), BluDC= 0% (  0)	Enable=OFF
+I/O register block initialized successfully
+Simulating with 16 switches and 16 LEDs
+SHOWING DATA...
+INFO[main()]:  Retrieved item[0] sw=0000a5a5, duty cycles= {25, 102, 128}
+INFO[main()]:  Retrieved item[1] sw=00005a5a, duty cycles= {128, 128, 128}
+INFO[main()]:  Retrieved item[2] sw=0000ffff, duty cycles= {255, 255, 255}
+INFO[main()]:  Retrieved item[3] sw=00000000, duty cycles= {0, 0, 0}
+INFO[main()]:  Retrieved item[4] sw=0000ece3, duty cycles= {30, 60, 90}
+INFO[main()]:  Retrieved item[5] sw=00000000, duty cycles= {75, 131, 182}
+INFO[main()]:  Retrieved item[6] sw=0000ffff, duty cycles= {89, 109, 65}
+INFO[main()]:  Retrieved item[7] sw=0000000f, duty cycles= {237, 220, 206}
+INFO[main()]:  Retrieved item[8] sw=00004ac8, duty cycles= {153, 157, 71}
+INFO[main()]:  Retrieved item[9] sw=00005a5a, duty cycles= {47, 115, 180}
+INFO(main()]: There are 10 data items to send to I/O module
+
+SENDING ITEM 0 to I/O MODULE...
+  o_o_  _o_o  o_o_  _o_o
+RedDC= 9% ( 25), GrnDC=40% (102), BluDC=50% (128)	Enable=ON
+
+SENDING ITEM 1 to I/O MODULE...
+  _o_o  o_o_  _o_o  o_o_
+RedDC=50% (128), GrnDC=50% (128), BluDC=50% (128)	Enable=ON
+
+SENDING ITEM 2 to I/O MODULE...
+  oooo  oooo  oooo  oooo
+RedDC=100% (255), GrnDC=100% (255), BluDC=100% (255)	Enable=ON
+
+SENDING ITEM 3 to I/O MODULE...
+  ____  ____  ____  ____
+RedDC= 0% (  0), GrnDC= 0% (  0), BluDC= 0% (  0)	Enable=ON
+
+SENDING ITEM 4 to I/O MODULE...
+  ooo_  oo__  ooo_  __oo
+RedDC=11% ( 30), GrnDC=23% ( 60), BluDC=35% ( 90)	Enable=ON
+
+SENDING ITEM 5 to I/O MODULE...
+  ____  ____  ____  ____
+RedDC=29% ( 75), GrnDC=51% (131), BluDC=71% (182)	Enable=ON
+
+SENDING ITEM 6 to I/O MODULE...
+  oooo  oooo  oooo  oooo
+RedDC=34% ( 89), GrnDC=42% (109), BluDC=25% ( 65)	Enable=ON
+
+SENDING ITEM 7 to I/O MODULE...
+  ____  ____  ____  oooo
+RedDC=92% (237), GrnDC=86% (220), BluDC=80% (206)	Enable=ON
+
+SENDING ITEM 8 to I/O MODULE...
+  _o__  o_o_  oo__  o___
+RedDC=60% (153), GrnDC=61% (157), BluDC=27% ( 71)	Enable=ON
+
+SENDING ITEM 9 to I/O MODULE...
+  _o_o  o_o_  _o_o  o_o_
+RedDC=18% ( 47), GrnDC=45% (115), BluDC=70% (180)	Enable=ON
+
+
+bash-4.2$ echo "This is run #2"
+This is run #2
+bash-4.2$ ./hw3
+Embedded System Programmer at your service (mosiah@pdx.edu)
+Current working directory: /home/mosiah/common/Desktop/ECE 361/HW3/HW3b
+
+  ____  ____  ____  ____
+RedDC= 0% (  0), GrnDC= 0% (  0), BluDC= 0% (  0)	Enable=OFF
+I/O register block initialized successfully
+Simulating with 16 switches and 16 LEDs
+SHOWING DATA...
+INFO[main()]:  Retrieved item[0] sw=0000a5a5, duty cycles= {25, 102, 128}
+INFO[main()]:  Retrieved item[1] sw=00005a5a, duty cycles= {128, 128, 128}
+INFO[main()]:  Retrieved item[2] sw=0000ffff, duty cycles= {255, 255, 255}
+INFO[main()]:  Retrieved item[3] sw=00000000, duty cycles= {0, 0, 0}
+INFO[main()]:  Retrieved item[4] sw=0000ece3, duty cycles= {30, 60, 90}
+INFO[main()]:  Retrieved item[5] sw=00000000, duty cycles= {253, 119, 100}
+INFO[main()]:  Retrieved item[6] sw=0000ffff, duty cycles= {79, 84, 166}
+INFO[main()]:  Retrieved item[7] sw=0000000f, duty cycles= {55, 33, 179}
+INFO[main()]:  Retrieved item[8] sw=00004ac8, duty cycles= {191, 242, 50}
+INFO[main()]:  Retrieved item[9] sw=00005a5a, duty cycles= {0, 19, 178}
+INFO(main()]: There are 10 data items to send to I/O module
+
+SENDING ITEM 0 to I/O MODULE...
+  o_o_  _o_o  o_o_  _o_o
+RedDC= 9% ( 25), GrnDC=40% (102), BluDC=50% (128)	Enable=ON
+
+SENDING ITEM 1 to I/O MODULE...
+  _o_o  o_o_  _o_o  o_o_
+RedDC=50% (128), GrnDC=50% (128), BluDC=50% (128)	Enable=ON
+
+SENDING ITEM 2 to I/O MODULE...
+  oooo  oooo  oooo  oooo
+RedDC=100% (255), GrnDC=100% (255), BluDC=100% (255)	Enable=ON
+
+SENDING ITEM 3 to I/O MODULE...
+  ____  ____  ____  ____
+RedDC= 0% (  0), GrnDC= 0% (  0), BluDC= 0% (  0)	Enable=ON
+
+SENDING ITEM 4 to I/O MODULE...
+  ooo_  oo__  ooo_  __oo
+RedDC=11% ( 30), GrnDC=23% ( 60), BluDC=35% ( 90)	Enable=ON
+
+SENDING ITEM 5 to I/O MODULE...
+  ____  ____  ____  ____
+RedDC=99% (253), GrnDC=46% (119), BluDC=39% (100)	Enable=ON
+
+SENDING ITEM 6 to I/O MODULE...
+  oooo  oooo  oooo  oooo
+RedDC=30% ( 79), GrnDC=32% ( 84), BluDC=65% (166)	Enable=ON
+
+SENDING ITEM 7 to I/O MODULE...
+  ____  ____  ____  oooo
+RedDC=21% ( 55), GrnDC=12% ( 33), BluDC=70% (179)	Enable=ON
+
+SENDING ITEM 8 to I/O MODULE...
+  _o__  o_o_  oo__  o___
+RedDC=74% (191), GrnDC=94% (242), BluDC=19% ( 50)	Enable=ON
+
+SENDING ITEM 9 to I/O MODULE...
+  _o_o  o_o_  _o_o  o_o_
+RedDC= 0% (  0), GrnDC= 7% ( 19), BluDC=69% (178)	Enable=ON
+
+
+bash-4.2$ echo "I had my test cases randomly generate values for their RGB values"
+I had my test cases randomly generate values for their RGB values
+bash-4.2$ 
+

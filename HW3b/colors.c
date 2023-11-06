@@ -84,6 +84,6 @@ uint32_t makeRGBLedReg(color_t s, bool enable){
 	byte_mask = getColor(BLUE, s);
 	RGB_register |= byte_mask;
 	
-	printf("Value in RGB_register = %d\n", RGB_register);
+	//printf("Value in RGB_register = %08X\n", RGB_register);
 	return RGB_register;
 }
