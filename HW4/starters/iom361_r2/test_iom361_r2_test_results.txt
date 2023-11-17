@@ -1,0 +1,50 @@
+[2023-11-05 23:23.01]  /drives/c/Users/roykr/psuproj/ece361f23/hw4/prob3/iom361_r2
+[roykr.DESKTOP-UAMUI66] ➤ whoami
+roykr
+
+[2023-11-05 23:23.03]  /drives/c/Users/roykr/psuproj/ece361f23/hw4/prob3/iom361_r2
+[roykr.DESKTOP-UAMUI66] ➤ gcc -Wall -std=c99 -o test_iom361_r2.exe test_iom361_r2.c *.o
+
+[2023-11-05 23:23.32]  /drives/c/Users/roykr/psuproj/ece361f23/hw4/prob3/iom361_r2
+[roykr.DESKTOP-UAMUI66] ➤ ./test_iom361_r2
+ECE 361 - Test ECE 361 IO Module(roy.kravitz@pdx.edu)
+Current working directory: /drives/c/Users/roykr/psuproj/ece361f23/hw4/prob3/iom361_r2
+
+Test 1: Initialize and read the I/O registers
+  ____  ____  ____  ____
+RedDC= 0% (  0), GrnDC= 0% (  0), BluDC= 0% (  0)       Enable=OFF
+
+Reading I/O register 0, value: 00000000
+Reading I/O register 1, value: 00000000
+Reading I/O register 2, value: 00000000
+Reading I/O register 3, value: 0005E147
+Reading I/O register 4, value: 000C0000
+Reading I/O register 5, value: 11111111
+Reading I/O register 6, value: 22222222
+Reading I/O register 7, value: 33333333
+
+Test 2: Test the switches and leds
+        setting switches to     A5A5
+  o_o_  _o_o  o_o_  _o_o
+        setting switches to     5A5A
+  _o_o  o_o_  _o_o  o_o_
+        setting switches to     FFFF
+  oooo  oooo  oooo  oooo
+        setting switches to        0
+  ____  ____  ____  ____
+
+Test 3: Test the RGB LED
+RedDC=67% (171), GrnDC=72% (186), BluDC=98% (252)       Enable=ON
+RedDC=21% ( 56), GrnDC= 1% (  3), BluDC=47% (120)       Enable=OFF
+
+Test 4: Test the sensor
+Temperature: 10.0C(0004CCCC), Relative Humidity: 63.0%(000A147A)
+
+Test 5: Test the random sensor value function
+Temperature: 48.9C(0007E978), Relative Humidity: 80.0%(000CCE03)
+
+Test 5: Try a 2nd set of random numbers
+Temperature: 47.9C(0007D54C), Relative Humidity: 80.8%(000CEBBD)
+
+[2023-11-05 23:23.39]  /drives/c/Users/roykr/psuproj/ece361f23/hw4/prob3/iom361_r2
+[roykr.DESKTOP-UAMUI66] ➤

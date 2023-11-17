@@ -1,0 +1,126 @@
+[2023-11-05 23:26.25]  /drives/c/Users/roykr/psuproj/ece361f23/hw4/prob3/random_float_generator
+[roykr.DESKTOP-UAMUI66] ➤ whoami
+roykr
+
+[2023-11-05 23:26.28]  /drives/c/Users/roykr/psuproj/ece361f23/hw4/prob3/random_float_generator
+[roykr.DESKTOP-UAMUI66] ➤ gcc -Wall -std=c99 -o test_float_rndm.exe test_float_rndm.c *.o
+
+[2023-11-05 23:26.42]  /drives/c/Users/roykr/psuproj/ece361f23/hw4/prob3/random_float_generator
+[roykr.DESKTOP-UAMUI66] ➤ ./test_float_rndm
+
+
+Selection:
+0 : Input range to generate random float
+1 : Exit
+Select: 0
+Input a: 48
+Input b: 69
+=> Random: 62.490022
+=> Random: 58.613786
+=> Random: 60.421301
+=> Random: 59.650483
+=> Random: 55.947005
+=> Random: 53.412374
+=> Random: 52.355025
+=> Random: 61.151501
+=> Random: 55.142668
+=> Random: 65.720890
+=> Random: 49.444339
+=> Random: 56.608045
+=> Random: 66.479875
+=> Random: 54.709086
+=> Random: 68.591932
+=> Random: 49.785101
+=> Random: 67.060208
+=> Random: 50.152698
+=> Random: 67.361533
+=> Random: 58.658575
+=> Random: 66.318074
+=> Random: 54.998455
+=> Random: 62.540598
+=> Random: 59.695870
+=> Random: 55.600219
+=> Random: 48.671870
+=> Random: 66.028733
+=> Random: 50.078674
+=> Random: 66.418418
+=> Random: 57.434437
+=> Random: 57.076045
+=> Random: 60.731626
+=> Random: 67.484591
+=> Random: 61.949999
+=> Random: 56.302672
+=> Random: 57.207848
+=> Random: 61.694627
+=> Random: 67.506135
+=> Random: 67.932011
+=> Random: 54.454051
+=> Random: 60.526142
+=> Random: 64.444600
+=> Random: 55.098638
+=> Random: 64.910309
+=> Random: 67.786129
+=> Random: 49.395940
+=> Random: 65.998823
+=> Random: 68.521585
+=> Random: 66.682570
+=> Random: 59.450788
+=> Random: 66.151807
+=> Random: 57.613226
+=> Random: 64.804608
+=> Random: 66.347817
+=> Random: 65.258187
+=> Random: 51.900251
+=> Random: 49.811565
+=> Random: 61.401272
+=> Random: 52.910387
+=> Random: 57.717156
+=> Random: 48.155818
+=> Random: 61.335221
+=> Random: 56.846272
+=> Random: 68.026824
+=> Random: 52.412530
+=> Random: 68.385762
+=> Random: 53.486303
+=> Random: 65.998351
+=> Random: 60.207987
+=> Random: 62.853685
+=> Random: 54.005480
+=> Random: 54.682279
+=> Random: 61.522985
+=> Random: 66.028885
+=> Random: 62.046690
+=> Random: 57.306144
+=> Random: 49.173794
+=> Random: 64.326505
+=> Random: 60.488544
+=> Random: 50.143714
+=> Random: 54.290634
+=> Random: 67.965106
+=> Random: 61.980123
+=> Random: 67.902208
+=> Random: 66.468220
+=> Random: 62.718196
+=> Random: 55.895733
+=> Random: 60.883124
+=> Random: 66.125953
+=> Random: 50.859598
+=> Random: 57.233389
+=> Random: 53.766011
+=> Random: 51.923004
+=> Random: 58.629452
+=> Random: 59.980714
+=> Random: 62.129390
+=> Random: 61.096161
+=> Random: 49.287260
+=> Random: 59.559583
+=> Random: 59.843034
+
+
+Selection:
+0 : Input range to generate random float
+1 : Exit
+Select: 1
+
+[2023-11-05 23:27.06]  /drives/c/Users/roykr/psuproj/ece361f23/hw4/prob3/random_float_generator
+[roykr.DESKTOP-UAMUI66] ➤
