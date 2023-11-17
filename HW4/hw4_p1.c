@@ -26,9 +26,9 @@
  * Making the stack instance includes making a new
  * instance of the Linked List
  */
-struct Stack *createStack(){
-    struct Stack newStack;
-    newStack.top = createLList();//createLList() returns a pointer to
+struct Stack *createStack() {
+    struct Stack *newStack = malloc(sizeof(struct Stack));
+    newStack->top = createLList(); // create a new linked list
     return newStack;
 }
 
@@ -41,7 +41,7 @@ struct Stack *createStack(){
  * all new entries are added at the front of the linked list (pos = 1)
  */
 void push(struct Stack *stk, long data){
-    //TODO:  Implement the functionality
+    insertNodeInLList(stk->top, data, 1);   // insert at the front of the list
 }
 
 /**
@@ -53,7 +53,7 @@ void push(struct Stack *stk, long data){
  * number of nodes in the linked list
  */
 int size(struct Stack *stk){
-    //TODO:  Implement the functionality
+    return LListLength(stk->top);   // return the number of nodes in the linked list
 }
 
 
@@ -67,7 +67,7 @@ int size(struct Stack *stk){
  * linked list so the number of nodes on the linked list is 0
  */
 bool isEmpty(struct Stack *stk) {
-    //TODO:  Implement the functionality
+    return LListLength(stk->top) == 0;  // return true if the number of nodes in the linked list is 0
 }
 
 
@@ -82,7 +82,9 @@ bool isEmpty(struct Stack *stk) {
  * Linked List ADT
  */
 long pop(struct Stack *stk){ 
-    //TODO:  Implement the functionality
+    long data = getNodeDataInLList(stk->top, 1); // get the data from the front of the list
+    deleteNodeFromLLinkedList(stk->top, 1);  // delete the node from the front of the list
+    return data;    // return the data from the front of the list
 }
 
 
@@ -96,7 +98,7 @@ long pop(struct Stack *stk){
  * except the entry is not removed from the linked list
  */
 long peek(struct Stack * stk){
-    //TODO:  Implement the functionality
+    return getNodeDataInLList(stk->top, 1); // return the data from the front of the list
 }
 
 
@@ -109,6 +111,7 @@ long peek(struct Stack * stk){
  * to remove the linked list and then frees the stack instance, itself
  */
 void deleteStack(struct Stack *stk){
-    //TODO:  Implement the functionality
+    deleteLList(stk->top);  // delete the linked list
+    free(stk);  // free the stack instance
  }
  
