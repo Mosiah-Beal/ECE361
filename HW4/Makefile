@@ -16,20 +16,26 @@ PROBLEM3 = RPNcalculator
 
 all: $(PROBLEM1)
 
-problem1: test_stackADT_LL.o hw4_p1.o LinkedList.o
+problem1: $(PROBLEM1)
 	gcc $(CFLAGS) -o $@ $^
 
-hw4_p1.o: hw4_p1.c
-	gcc $(CFLAGS) -c $^
+problem2: $(PROBLEM2)
+	gcc $(CFLAGS) -o $@ $^
 
 LinkedList.o: LinkedList.c
 	gcc $(CFLAGS) -c $<
-	
-problem2: RPNcalculator.o hw4_p1.o LinkedList.o
-	gcc $(CFLAGS) -o $@ $^
+
+hw4_p1.o: hw4_p1.c
+	gcc $(CFLAGS) -c $<
 
 RPNcalculator.o: RPNcalculator.c 
-	gcc $(CFLAGS) -o $@ $<
+	gcc $(CFLAGS) -c $<
+
+
+# Test cases
+test_problem1: test_stackADT_LL.o hw4_p1.o LinkedList.o
+	gcc $(CFLAGS) -o $@ $^
+
 
 test_stackADT_LL.o: test_stackADT_LL.c
 	gcc $(CFLAGS) -c $<

@@ -23,20 +23,21 @@
 
 // prototypes
 void print_dir(void);
-int calculateRPN(char* input, struct Stack* stack) {
+int calculateRPN(char* input, struct Stack* stack);
 
 int main() {
     // print the current working directory
     print_dir();
 
     // create a stack
-    struct Stack stack = createStack();
+    struct Stack* stack;
+    stack = createStack();
 
     char* result7 = "1 2 3 * + =";
     char* result_n8 = "5 8 * 4 9 - / =";
 
-    assert(calculateRPN(result7, &stack) == 7);
-    assert(calculateRPN(result_n8, &stack) == -8);
+    assert(calculateRPN(result7, stack) == 7);
+    assert(calculateRPN(result_n8, stack) == -8);
 
 
     char *input = malloc(100 * sizeof(char));
@@ -61,16 +62,16 @@ int main() {
     */
 
     // loop through the string of numbers and operators //check that integer division doesn't break it
-    calculateRPN(input, &stack);
+    calculateRPN(input, stack);
 
     // check if there is only one number on the stack
-    if (size(*stack) != 1) {
+    if (size(stack) != 1) {
         printf("Invalid expression\n");
         return 1;
     }
 
     // print the result
-    printf("Result: %ld\n", pop(&stack));
+    printf("Result: %ld\n", pop(stack));
     return 0;
 
 }
@@ -96,17 +97,23 @@ int calculateRPN(char* input, struct Stack* stack) {
      // loop through the string of numbers and operators 
      //check that integer division doesn't break it
     for (int i = 0; i < strlen(input); i++) {
+        
         // if the character is a number, push it onto the stack
         if (input[i] >= '0' && input[i] <= '9') {
             push(stack, input[i] - '0');
         }
+        
+        else if (input[i] == '=') {
+        	printf("Finished Calculating");
+        	return peek(stack);
+        }
         // if the character is an operator, pop two numbers off the stack and
         // perform the operation
         else if (input[i] == '+' || input[i] == '-' || input[i] == '*' ||
-                 input[i] == '/' || input[i] == '^' || input[i] == '=') {
+                 input[i] == '/' || input[i] == '^') {
             
             // check if there are at least two numbers on the stack
-            if (stack->size < 2) {
+            if (size(stack) < 2) {
                 printf("Invalid expression\n");
                 return INT_MIN;
             }
@@ -114,6 +121,7 @@ int calculateRPN(char* input, struct Stack* stack) {
             // pop the two numbers off the stack
             int num1 = pop(stack);
             int num2 = pop(stack);
+            
             // perform the operation
             switch (input[i]) {
                 case '+':
