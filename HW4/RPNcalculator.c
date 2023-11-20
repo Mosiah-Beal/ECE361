@@ -18,6 +18,8 @@
 #include <string.h>
 #include <errno.h>
 #include <assert.h>
+#include <ctype.h>
+
 
 #include "stackADT_LL.h"
 
@@ -33,24 +35,44 @@ int main() {
     // create a stack
     struct Stack* stack;
     stack = createStack();
-    printf("initial stack pointer: %p\n", (void *) stack);
+    //printf("initial stack pointer: %p\n", (void *) stack);
 
+    // simple tests
     char* result7 = "1 2 3 * + =";
+    
+    // sign tests
     char* result_n8 = "5 8 * 4 9 - / =";
-    
 	char* result8 = "5 8 * 9 4 - / =";
-    
-    assert(calculateRPN(result7, stack) == 7);
-	stack = getNewStack(&stack);
-	printf("first reset stack pointer: %p\n", (void *) stack);
+	char* result8_2 = "5 -8 * 4 9 - / =";
 	
+	// fractional tests
+	char* result1 = " 2 2 4 / * =";
+	
+
+    //assert(calculateRPN(result1, stack) == 1);
+	printf("%s %d\n", result1, calculateRPN(result1, stack)); 
+	stack = getNewStack(&stack);	
     
+    /*
+    assert(calculateRPN(result7, stack) == 7);
+	printf("%s %d\n", result7, calculateRPN(result7, stack)); 
+	stack = getNewStack(&stack);
+	//printf("first reset stack pointer: %p\n", (void *) stack);
+	    
     assert(calculateRPN(result_n8, stack) == -8);
+	printf("%s %d\n", result_n8, calculateRPN(result_n8, stack)); 
+    stack = getNewStack(&stack);
+
+	assert(calculateRPN(result8, stack) == 8);
+	printf("%s %d\n", result8, calculateRPN(result8, stack)); 
     stack = getNewStack(&stack);
 
 
-	calculateRPN(result8, stack); 
-	
+	calculateRPN(result8_2, stack); 
+	printf("%s %d\n", result8_2, calculateRPN(result8_2, stack)); 
+    stack = getNewStack(&stack);
+*/
+
     char *input = malloc(100 * sizeof(char));
     printf("Enter a string of numbers and operators: ");
     
@@ -61,21 +83,6 @@ int main() {
     //check that integer division doesn't break it
 	   
     //calculateRPN(input, stack);
-
-    // check if there is only one number on the stack //head and result
-    if (size(stack) != 1) {
-        printf("Invalid expression\n");
-        printf("Size = %d\nRemaining elements:\n", size(stack));
-        
-        while(size(stack)) {
-        printf("%ld \n", pop(stack));
-        }
-        
-        return 1;
-    }
-
-    // print the result
-    printf("Result: %ld\n", pop(stack));
     return 0;
 
 }
@@ -98,8 +105,8 @@ void print_dir(void) {
 int calculateRPN(char* input, struct Stack* stack) {
      //echo input
      //printf("You input: %s\n", input);
-     printf("stack pointer on entry: %p\n", (void *) stack);
-     
+     //printf("stack pointer on entry: %p\n", (void *) stack);
+     bool debug = true;
      // loop through the string of numbers and operators 
      //check that integer division doesn't break it
     for (int i = 0; i < strlen(input); i++) {
@@ -137,29 +144,37 @@ int calculateRPN(char* input, struct Stack* stack) {
             }
             
             // pop the two numbers off the stack
-            int num2 = pop(stack);	//added to stack second
-            int num1 = pop(stack);	//added to stack first
+            double num2 = pop(stack);	//added to stack second
+            double num1 = pop(stack);	//added to stack first
+            double quotient;
+            //printf("num1: %lf num2: %lf\n", num1, num2);
             
+            printf("Step %d:  ", i);
             // perform the operation
+            // math works with doubles, printf("%g") uses smallest representation of number 
             switch (input[i]) {
                 case '+':
-                	printf("%d + %d = %d\n", num1, num2, num1+num2);
+                	(!debug) ? 1+1 :printf("%g + %g = %g\n", num1, num2, num1+num2);
                     push(stack, num1 + num2);
                     break;
                 case '-':
-                	printf("%d - %d = %d\n", num1, num2, num1-num2);
+                	(!debug) ? 1+1 :printf("%g - %g = %g\n", num1, num2, num1-num2);
                     push(stack, num1 - num2);
                     break;
                 case '*':
-                printf("%d * %d = %d\n", num1, num2, num1*num2);
+                	(!debug) ? 1+1 :printf("%g * %g = %g\n", num1, num2, num1*num2);
                     push(stack, num1 * num2);
                     break;
                 case '/':
-                printf("%d / %d = %d\n", num1, num2, num1/num2);
-                    push(stack, num1 / num2);
+                	quotient = (double) num1 / num2;
+                	(!debug) ? 1+1 :printf("%g / %g = %g\n", num1, num2, quotient);
+                	printf("Pre-push: %lf\n", quotient);
+                    push(stack, (double) quotient);
+                    printf("post-push: %lf\n", peek(stack));
+                    
                     break;
                 case '^':
-                printf("%d ^ %d = %lf\n", num1, num2, pow(num1, num2));
+                	(!debug) ? 1+1 :printf("%g ^ %g = %g\n", num1, num2, pow(num1, num2));
                     push(stack, pow(num1, num2));
                     break;
             }
@@ -169,14 +184,13 @@ int calculateRPN(char* input, struct Stack* stack) {
             printf("Invalid character found: %c\n", input[i]);
             printf("Has value: %d\n", input[i]);
             
-            //return INT_MIN;
         }
     }
     
 	//completed loop successfully, return result
 	//printf("stack pointer on exit: %p\n", (void *) stack);
 	//printf("Peeked: %ld\n", peek(stack));
-	return peek(stack);
+	return pop(stack);
 
 }
 
