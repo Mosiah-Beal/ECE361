@@ -24,7 +24,7 @@
 // prototypes
 void print_dir(void);
 int calculateRPN(char* input, struct Stack* stack);
-Stack* getNewStack(Stack** stack)
+struct Stack* getNewStack(struct Stack** stack);
 
 int main() {
     // print the current working directory
@@ -42,6 +42,8 @@ int main() {
     
     assert(calculateRPN(result7, stack) == 7);
 	stack = getNewStack(&stack);
+	printf("first reset stack pointer: %p\n", (void *) stack);
+	
     
     assert(calculateRPN(result_n8, stack) == -8);
     stack = getNewStack(&stack);
@@ -171,16 +173,14 @@ int calculateRPN(char* input, struct Stack* stack) {
         }
     }
     
-	//completed loop successfully
+	//completed loop successfully, return result
 	//printf("stack pointer on exit: %p\n", (void *) stack);
 	//printf("Peeked: %ld\n", peek(stack));
 	return peek(stack);
-    
-    //done processing string, return result
-    return peek(stack);
+
 }
 
-Stack* getNewStack(Stack** stack) {
+struct Stack* getNewStack(struct Stack** stack) {
     deleteStack(*stack);
     *stack = createStack();
     return *stack;
