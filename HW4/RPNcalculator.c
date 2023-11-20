@@ -80,8 +80,7 @@ int main() {
 }
 
 
-void print_dir(void)
-{
+void print_dir(void) {
     errno = 0;
     char *buf = getcwd(NULL, 0);    // allocates a buffer to hold the path   
     if (buf == NULL) {
@@ -123,6 +122,13 @@ int calculateRPN(char* input, struct Stack* stack) {
         else if (input[i] == '+' || input[i] == '-' || input[i] == '*' ||
                  input[i] == '/' || input[i] == '^') {
             
+            // check if user is adding a negative number to the stack
+            if (input[i] == '-' && input[i+1] >= '0' && input[i+1] <= '9') {
+                push(stack, (input[i+1] - '0') * -1);
+                i++;    // skip the next character (added to stack)
+                continue;
+            }
+
             // check if there are at least two numbers on the stack
             if (size(stack) < 2) {
                 printf("Invalid expression\n");
