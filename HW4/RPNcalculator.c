@@ -24,6 +24,7 @@
 // prototypes
 void print_dir(void);
 int calculateRPN(char* input, struct Stack* stack);
+Stack* getNewStack(Stack** stack)
 
 int main() {
     // print the current working directory
@@ -40,12 +41,10 @@ int main() {
 	char* result8 = "5 8 * 9 4 - / =";
     
     assert(calculateRPN(result7, stack) == 7);
-    deleteStack(stack);
-	stack = createStack();
+	stack = getNewStack(&stack);
     
     assert(calculateRPN(result_n8, stack) == -8);
-    deleteStack(stack);
-	stack = createStack();
+    stack = getNewStack(&stack);
 
 
 	calculateRPN(result8, stack); 
@@ -180,3 +179,9 @@ int calculateRPN(char* input, struct Stack* stack) {
     //done processing string, return result
     return peek(stack);
 }
+
+Stack* getNewStack(Stack** stack) {
+    deleteStack(*stack);
+    *stack = createStack();
+    return *stack;
+    }
