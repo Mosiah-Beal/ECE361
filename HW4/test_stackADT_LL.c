@@ -53,6 +53,7 @@ int main(){
     else
         printf("Stack is not empty");
 
+	printf("\n");
     deleteStack(stk);
     return 0;
  }

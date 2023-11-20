@@ -1,23 +1,53 @@
 # Makefile for HW4
-CFlags = -Wall -std=c99
-MathFlag = -lm
+CFLAGS = -Wall -std=c99 -lm
 
 HEADERS = LinkedList.h stackADT_LL.h
 OBJECTS = hw4_p1.o test_stackADT_LL.o
 
-problem1: hw4_p1.o
-	gcc $(CFlags) -o $@ hw4_p1.o
+# All .c files in the directory
+SRCS = $(wildcard *.c)
+
+# Object files (one for each source file)
+OBJS = $(SRCS:.c=.o)
+
+PROBLEM1 = test_stackADT_LL.o hw4_p1.o LinkedList.o
+PROBLEM2 = RPNcalculator.o hw4_p1.o LinkedList.o
+PROBLEM3 = RPNcalculator
+
+all: $(PROBLEM1)
+
+problem1: test_stackADT_LL.o hw4_p1.o LinkedList.o
+	gcc $(CFLAGS) -o $@ $^
 
 hw4_p1.o: hw4_p1.c
-	gcc $(CFlags) -c $<
+	gcc $(CFLAGS) -c $^
+
+LinkedList.o: LinkedList.c
+	gcc $(CFLAGS) -c $<
+	
+problem2: RPNcalculator.o hw4_p1.o LinkedList.o
+	gcc $(CFLAGS) -o $@ $^
+
+RPNcalculator.o: RPNcalculator.c 
+	gcc $(CFLAGS) -o $@ $<
 
 test_stackADT_LL.o: test_stackADT_LL.c
-	gcc $(CFlags) -c $<
+	gcc $(CFLAGS) -c $<
 
 test_LinkedList.o: test_LinkedList.c
-	gcc $(CFlags) -c $<
-	
-$(OBJECTS) : $(HEADERS)
+	gcc $(CFLAGS) -c $< 
 
-clean: 
-	rm problem1 hw4_p1.o test_stackADT_LL.o
+
+clean:
+	rm -f $(OBJS) $(PROBLEM1) $(PROBLEM2) $(PROBLEM3) problem1 problem2 problem3
+    	
+#$(OBJECTS) : $(HEADERS)
+
+
+$(OUTPUT): $(OBJS)
+	gcc $(CFLAGS) -o $@ $^
+
+%.o: %.c
+	gcc $(CFLAGS) -c $<
+
+

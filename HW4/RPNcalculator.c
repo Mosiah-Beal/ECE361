@@ -23,7 +23,7 @@
 
 // prototypes
 void print_dir(void);
-
+int calculateRPN(char* input, struct Stack stack) {
 
 /**
  * main()
@@ -44,13 +44,13 @@ int main()
     print_dir();
 
     // create a stack
-    Stack stack = createStack();
+    struct Stack stack = createStack();
 
     char* result7 = "1 2 3 * + =";
     char* result_n8 = "5 8 * 4 9 - / =";
 
-    assert(calculateRPN(result7) == 7);
-    assert(calculateRPN(result_n8) == -8);
+    assert(calculateRPN(result7, &stack) == 7);
+    assert(calculateRPN(result_n8, &stack) == -8);
 
 
     char *input = malloc(100 * sizeof(char));
@@ -75,16 +75,16 @@ int main()
     */
 
     // loop through the string of numbers and operators //check that integer division doesn't break it
-    calculateRPN(input);
+    calculateRPN(input, stack);
 
     // check if there is only one number on the stack
-    if (stack->size != 1) {
+    if (size(*stack) != 1) {
         printf("Invalid expression\n");
         return 1;
     }
 
     // print the result
-    printf("Result: %d\n", pop(stack));
+    printf("Result: %ld\n", pop(&stack));
     return 0;
 
 }
@@ -105,7 +105,7 @@ void print_dir(void)
     printf("\n");
 }
 
-int calculateRPN(char* input) {
+int calculateRPN(char* input, struct Stack stack) {
      
      // loop through the string of numbers and operators //check that integer division doesn't break it
     for (int i = 0; i < strlen(input); i++) {

@@ -54,8 +54,6 @@ int main(){
     
     //  delete the entire list
     deleteLList(LL);
-    if (LL == NULL) {
-        printf("The linked list has been deleted\n");
-    }
+    printf("\n");
 	return 0;
 }
