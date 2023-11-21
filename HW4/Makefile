@@ -15,7 +15,7 @@ PROBLEM1 = hw4_p1.o LinkedList.o
 PROBLEM2 = RPNcalculator.o $(PROBLEM1)
 PROBLEM3 = hw4_p3.o float_rndm.o iom361_r2.o colors.o $(PROBLEM1)
 
-
+	
 # Problems
 problem1: $(PROBLEM1) test_stackADT_LL.o
 	gcc $(CFLAGS) -o $@ $^
@@ -44,7 +44,7 @@ test_LinkedList.o: test_LinkedList.c
 
 
 clean:
-	rm -f $(OBJS) $(PROBLEM1) $(PROBLEM2) $(PROBLEM3) problem1 problem2 problem3
+	rm -f *.o problem1 problem2 problem3
     	
 $(OBJECTS) : $(HEADERS)
 

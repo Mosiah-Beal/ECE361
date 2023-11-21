@@ -57,7 +57,7 @@ int main() {
 	 
 	// initialize IO module
 	printf("Test 1: Initialize and read the I/O registers\n");
-	io_base = iom361_initialize(16, 16, &rtn_code);
+	io_base = iom361_initialize(NUM_SWITCHES, NUM_LEDS, &rtn_code);
 	if (rtn_code != 0) {
 		// initialization failed
 		printf("Could not initialize I/O module\n");
@@ -74,50 +74,53 @@ int main() {
 				i, reg_value);
 		}
 		else {
-			 printf("ERROR(main): Failed reading I/O register %d\n", i);
+			 printf("ERROR: Couldn't read I/O register %d\n", i);
 		}
 	}
 	// get the "hardwired" data
-	srand(time(NULL));   // Initializing random number generator
 	num_items = populate_data_array();
 	
-	// display the contents of the data array
-	printf("SHOWING DATA...\n");
-	for (int i = 0; i < num_items; i++){
-		uint32_t sw;
-		uint8_t dcr, dcg, dcb;
+	// Show contents of data array
+	if(false) {
 		
-		// separate and display the data items
-		sw = data[i].sw;
-		dcr = data[i].rgb.red;
-		dcg = data[i].rgb.green;
-		dcb = data[i].rgb.blue;
-		printf("INFO[main()]:  Retrieved item[%d] sw=%08x, duty cycles= {%d, %d, %d}\n",
-				i, sw, dcr, dcg, dcb);
-	}
-	printf("INFO(main()]: There are %d data items to send to I/O module\n", num_items);
-	
-	// sending the data to the iom361 peripheral registers
-	
-	for (int i = 0; i < num_items; i++) {
-		// ADD YOUR CODE TO SEND DATA TO iom361 peripheral registers
-		printf("\nSENDING ITEM %d to I/O MODULE...\n", i);
+		// display the contents of the data array
+		printf("SHOWING DATA...\n");
+		for (int i = 0; i < num_items; i++){
+			uint32_t sw;
+			uint8_t dcr, dcg, dcb;
+			
+			// separate and display the data items
+			sw = data[i].sw;
+			dcr = data[i].rgb.red;
+			dcg = data[i].rgb.green;
+			dcb = data[i].rgb.blue;
+			printf("INFO[main()]:  Retrieved item[%d] sw=%08x, duty cycles= {%d, %d, %d}\n",
+					i, sw, dcr, dcg, dcb);
+		}
+		printf("INFO(main()]: There are %d data items to send to I/O module\n", num_items);
 		
-		// Set switch register
-		//printf("\tsetting switches to %08X\n", data[i].sw); 
-		write_switch_to_LED(data[i].sw);
+		// sending the data to the iom361 peripheral registers
 		
-		// Set RGB register
-		reg_value = makeRGBLedReg(data[i].rgb, true);
-		//printf("\tsetting RGB value to %08X\n", reg_value);
-		iom361_writeReg(io_base, RGB_LED_REG, reg_value, &rtn_code);
-		if (rtn_code != 0) {
-			printf("ERROR(main): Could not write RGB LED register\n");
+		for (int i = 0; i < num_items; i++) {
+			// ADD YOUR CODE TO SEND DATA TO iom361 peripheral registers
+			printf("\nSENDING ITEM %d to I/O MODULE...\n", i);
+			
+			// Set switch register
+			//printf("\tsetting switches to %08X\n", data[i].sw); 
+			write_switch_to_LED(data[i].sw);
+			
+			// Set RGB register
+			reg_value = makeRGBLedReg(data[i].rgb, true);
+			//printf("\tsetting RGB value to %08X\n", reg_value);
+			iom361_writeReg(io_base, RGB_LED_REG, reg_value, &rtn_code);
+			if (rtn_code != 0) {
+				printf("ERROR(main): Could not write RGB LED register\n");
+			}
+			
+			sleep(3);
 		}
 		
-		sleep(3);
 	}
-	
 
 	// set a new temperature and humidity and display it
 	printf("\nTest 4: Test the sensor\n");	 
@@ -152,7 +155,7 @@ void print_dir(void) {
 }
 
  /**
-  * read_sensor() - reads in data from sensor
+  * read_sensor() - reads in data from temperature and humidity sensor
   *
   *
   *
@@ -191,7 +194,6 @@ void write_switch_to_LED(uint32_t reg_value) {
   */
 int populate_data_array(void) {
 	int num_items = 0;
-	
 	data[0].sw = 0x0000A5A5;
 	data[0].rgb.red = 25; data[0].rgb.green = 102; data[0].rgb.blue = 128;
 	++num_items;
@@ -213,6 +215,7 @@ int populate_data_array(void) {
 	++num_items;
 	
 	// ADD YOUR TEST CASES HERE
+	srand(time(NULL));   // Initializing random number generator
 	while(num_items < MAX_DATA_ITEMS) {
 		uint32_t random_switch = (uint32_t) rand();		//random uint32 value
 		data[num_items].sw = random_switch & 0xFFFF;	//mask lower 2 bytes
