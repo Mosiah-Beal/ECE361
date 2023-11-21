@@ -39,7 +39,7 @@ typedef struct LinkedList {
 LinkedListPtr_t createLList(void);
 int LListLength(LinkedListPtr_t L);
 void insertNodeInLList(LinkedListPtr_t L, double data, int pos);
-long getNodeDataInLList(LinkedListPtr_t L, int pos);
+double getNodeDataInLList(LinkedListPtr_t L, int pos);
 void deleteNodeFromLLinkedList(LinkedListPtr_t L, int pos);
 void printLList(LinkedListPtr_t L);
 void deleteLList(LinkedListPtr_t L);

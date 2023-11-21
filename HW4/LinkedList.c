@@ -64,7 +64,7 @@ int LListLength(LinkedListPtr_t L){
  *
  * @returns	the data from the selected node as a double float
  */
-long getNodeDataInLList(LinkedListPtr_t L, int pos) {
+double getNodeDataInLList(LinkedListPtr_t L, int pos) {
     ListNodePtr_t p = L->head;
     int k = 1;
 

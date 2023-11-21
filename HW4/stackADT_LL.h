@@ -27,11 +27,11 @@ struct Stack{
 
 // API function prototypes
 struct Stack *createStack();
-void push(struct Stack *stk, long data);
+void push(struct Stack *stk, double data);
 int size(struct Stack *stk);
 bool isEmpty(struct Stack *stk);
-long pop(struct Stack *stk);
-long peek(struct Stack * stk);
+double pop(struct Stack *stk);
+double peek(struct Stack * stk);
 void deleteStack(struct Stack *stk);
 
 #endif

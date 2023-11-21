@@ -43,7 +43,7 @@ struct Stack *createStack() {
  * Makes use of the insertNodeInLList() function.  In a stack
  * all new entries are added at the front of the linked list (pos = 1)
  */
-void push(struct Stack *stk, long data){
+void push(struct Stack *stk, double data){
     insertNodeInLList(stk->top, data, 1);   // insert at the front of the list
 }
 
@@ -84,8 +84,8 @@ bool isEmpty(struct Stack *stk) {
  * then then deleted by using the deleteNodeFromLLinkedList() function in the
  * Linked List ADT
  */
-long pop(struct Stack *stk){ 
-    long data = getNodeDataInLList(stk->top, 1); // get the data from the front of the list
+double pop(struct Stack *stk){ 
+    double data = getNodeDataInLList(stk->top, 1); // get the data from the front of the list
     deleteNodeFromLLinkedList(stk->top, 1);  // delete the node from the front of the list
     return data;    // return the data from the front of the list
 }
@@ -100,7 +100,7 @@ long pop(struct Stack *stk){
  * entries are returned from the front of the linked list (pos = 1).  Like pop()
  * except the entry is not removed from the linked list
  */
-long peek(struct Stack * stk){
+double peek(struct Stack * stk){
     return getNodeDataInLList(stk->top, 1); // return the data from the front of the list
 }
 
