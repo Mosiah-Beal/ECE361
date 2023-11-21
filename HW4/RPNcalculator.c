@@ -39,45 +39,61 @@ int main() {
 
     // simple tests
     char* result7 = "1 2 3 * + =";
+    char* result10= "1 2 + 3 4 + + =";
+    
+    assert(calculateRPN(result7, stack) == 7);
+	//printf("%s %d\n", result7, calculateRPN(result7, stack)); 
+	stack = getNewStack(&stack);
+	
+	assert(calculateRPN(result10, stack) == 10);
+	//printf("%s %d\n", result10, calculateRPN(result10, stack)); 
+	stack = getNewStack(&stack);
     
     // sign tests
     char* result_n8 = "5 8 * 4 9 - / =";
 	char* result8 = "5 8 * 9 4 - / =";
 	char* result8_2 = "5 -8 * 4 9 - / =";
 	
-	// fractional tests
-	char* result1 = " 2 2 4 / * =";
-	
-
-    //assert(calculateRPN(result1, stack) == 1);
-	printf("%s %d\n", result1, calculateRPN(result1, stack)); 
-	stack = getNewStack(&stack);	
-    
-    /*
-    assert(calculateRPN(result7, stack) == 7);
-	printf("%s %d\n", result7, calculateRPN(result7, stack)); 
-	stack = getNewStack(&stack);
-	//printf("first reset stack pointer: %p\n", (void *) stack);
-	    
-    assert(calculateRPN(result_n8, stack) == -8);
-	printf("%s %d\n", result_n8, calculateRPN(result_n8, stack)); 
+	assert(calculateRPN(result_n8, stack) == -8);
+	//printf("%s %d\n", result_n8, calculateRPN(result_n8, stack)); 
     stack = getNewStack(&stack);
 
 	assert(calculateRPN(result8, stack) == 8);
-	printf("%s %d\n", result8, calculateRPN(result8, stack)); 
+	//printf("%s %d\n", result8, calculateRPN(result8, stack)); 
     stack = getNewStack(&stack);
-
 
 	calculateRPN(result8_2, stack); 
-	printf("%s %d\n", result8_2, calculateRPN(result8_2, stack)); 
+	//printf("%s %d\n", result8_2, calculateRPN(result8_2, stack)); 
     stack = getNewStack(&stack);
-*/
+	
+	// fractional tests
+	char* result1 = " 2 2 4 / * =";		// 2/4 -> 0 : 2*0 -> 0
+	char* result_n3 = " 3 2 / 9 2 / - =";	// 9/2 -> 4 : 1-4 -> -3
+	
+	//assert(calculateRPN(result1, stack) == 1);
+	//assert(calculateRPN(result1, stack) == 1);	
+	// I realized that push is demoting the data from a double into a long int :( 
+	//fractional results are not possible with the given prototypes in the stackADT header.
+	
+
+    // power tests
+    char* result25 = " 5 2 ^ = ";
+    char* result27 = " 3 3 ^ = ";
+    
+    assert(calculateRPN(result25, stack) == 25);
+    //printf("%s %d\n", result25, calculateRPN(result25, stack)); 
+    stack = getNewStack(&stack);
+    
+    assert(calculateRPN(result27, stack) == 27);
+    //printf("%s %d\n", result27, calculateRPN(result27, stack)); 
+	stack = getNewStack(&stack);
+	
 
     char *input = malloc(100 * sizeof(char));
+    do{
     printf("Enter a string of numbers and operators: ");
-    
-    //scanf("%s", input);
-
+    scanf("%s", input);
+	} while(strcmp(*input, "q") != 0)
 
     // loop through the string of numbers and operators 
     //check that integer division doesn't break it
@@ -106,7 +122,7 @@ int calculateRPN(char* input, struct Stack* stack) {
      //echo input
      //printf("You input: %s\n", input);
      //printf("stack pointer on entry: %p\n", (void *) stack);
-     bool debug = true;
+     bool debug = false;
      // loop through the string of numbers and operators 
      //check that integer division doesn't break it
     for (int i = 0; i < strlen(input); i++) {
@@ -149,7 +165,7 @@ int calculateRPN(char* input, struct Stack* stack) {
             double quotient;
             //printf("num1: %lf num2: %lf\n", num1, num2);
             
-            printf("Step %d:  ", i);
+            //printf("Step %d:  ", i);
             // perform the operation
             // math works with doubles, printf("%g") uses smallest representation of number 
             switch (input[i]) {
@@ -168,9 +184,9 @@ int calculateRPN(char* input, struct Stack* stack) {
                 case '/':
                 	quotient = (double) num1 / num2;
                 	(!debug) ? 1+1 :printf("%g / %g = %g\n", num1, num2, quotient);
-                	printf("Pre-push: %lf\n", quotient);
+                	//printf("Pre-push: %lf\n", quotient);
                     push(stack, (double) quotient);
-                    printf("post-push: %lf\n", peek(stack));
+                    //printf("post-push: %ld\n", peek(stack));
                     
                     break;
                 case '^':
