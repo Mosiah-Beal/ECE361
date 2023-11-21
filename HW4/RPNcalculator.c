@@ -28,6 +28,9 @@ void print_dir(void);
 int calculateRPN(char* input, struct Stack* stack);
 struct Stack* getNewStack(struct Stack** stack);
 
+// global debug variable
+bool debug = false;
+
 int main() {
     // print the current working directory
     print_dir();
@@ -37,34 +40,40 @@ int main() {
     stack = createStack();
     //printf("initial stack pointer: %p\n", (void *) stack);
 
+	if(!debug){
     // simple tests
     char* result7 = "1 2 3 * + =";
     char* result10= "1 2 + 3 4 + + =";
     
-    assert(calculateRPN(result7, stack) == 7);
-	//printf("%s %d\n", result7, calculateRPN(result7, stack)); 
+    //printf("%s %d\n", result7, calculateRPN(result7, stack)); 
+	assert(calculateRPN(result7, stack) == 7);
 	stack = getNewStack(&stack);
 	
-	assert(calculateRPN(result10, stack) == 10);
 	//printf("%s %d\n", result10, calculateRPN(result10, stack)); 
+	assert(calculateRPN(result10, stack) == 10);
 	stack = getNewStack(&stack);
     
     // sign tests
     char* result_n8 = "5 8 * 4 9 - / =";
 	char* result8 = "5 8 * 9 4 - / =";
 	char* result8_2 = "5 -8 * 4 9 - / =";
+	char* result_n15 = "-5 -10 + -5 -5- + ="; // -5 + -10 -> -15; -5 - -5 -> 0; -15 + 0 -> -15
 	
-	assert(calculateRPN(result_n8, stack) == -8);
 	//printf("%s %d\n", result_n8, calculateRPN(result_n8, stack)); 
-    stack = getNewStack(&stack);
+    assert(calculateRPN(result_n8, stack) == -8);
+	stack = getNewStack(&stack);
 
-	assert(calculateRPN(result8, stack) == 8);
 	//printf("%s %d\n", result8, calculateRPN(result8, stack)); 
-    stack = getNewStack(&stack);
+    assert(calculateRPN(result8, stack) == 8);
+	stack = getNewStack(&stack);
 
-	calculateRPN(result8_2, stack); 
 	//printf("%s %d\n", result8_2, calculateRPN(result8_2, stack)); 
+	assert(calculateRPN(result8_2, stack) == 8); 
     stack = getNewStack(&stack);
+    
+    //printf("%s %d\n", result_n15, calculateRPN(result_n15, stack)); 
+    assert(calculateRPN(result_n15, stack) == -15); 
+	stack = getNewStack(&stack);
 	
 	// fractional tests
 	char* result1 = " 2 2 4 / * =";		// 2/4 -> 0 : 2*0 -> 0
@@ -80,25 +89,27 @@ int main() {
     char* result25 = " 5 2 ^ = ";
     char* result27 = " 3 3 ^ = ";
     
-    assert(calculateRPN(result25, stack) == 25);
     //printf("%s %d\n", result25, calculateRPN(result25, stack)); 
+    assert(calculateRPN(result25, stack) == 25);
     stack = getNewStack(&stack);
     
-    assert(calculateRPN(result27, stack) == 27);
     //printf("%s %d\n", result27, calculateRPN(result27, stack)); 
-	stack = getNewStack(&stack);
+	assert(calculateRPN(result27, stack) == 27);
+    stack = getNewStack(&stack);
+	}
 	
-
     char *input = malloc(100 * sizeof(char));
     do{
-    printf("Enter a string of numbers and operators: ");
-    scanf("%s", input);
-	} while(strcmp(*input, "q") != 0)
+		// Get input from user
+		printf("Enter a string of numbers and operators: ");
+		fgets(input, 100, stdin);
+		input[strcspn(input, "\n")] = 0;
+		
+		// Perform the calculations
+		printf("%s %d\n", input, calculateRPN(input, stack)); 
+		stack = getNewStack(&stack);
+	} while((strcmp(input, "q") != 0) && (strcmp(input, "Q") != 0)); //exit on q/Q
 
-    // loop through the string of numbers and operators 
-    //check that integer division doesn't break it
-	   
-    //calculateRPN(input, stack);
     return 0;
 
 }
@@ -121,21 +132,37 @@ void print_dir(void) {
 int calculateRPN(char* input, struct Stack* stack) {
      //echo input
      //printf("You input: %s\n", input);
-     //printf("stack pointer on entry: %p\n", (void *) stack);
-     bool debug = false;
+     
+     //debug = true;
+     
+     // Check if user is trying to quit
+	if ((strcmp(input, "q") == 0) || (strcmp(input, "Q") == 0)){
+		return INT_MIN;
+	}
+    	
      // loop through the string of numbers and operators 
      //check that integer division doesn't break it
     for (int i = 0; i < strlen(input); i++) {
     
+    	
+    	
     	// Ignore whitespace
-        if (isspace(input[i])) {
-        	continue;
+     	if (isspace(input[i])) {
+    		continue;
     	}
         
         // if the character is a number, push it onto the stack
         else if (input[i] >= '0' && input[i] <= '9') {
-            push(stack, input[i] - '0');
-        }
+            
+    		int number = (input[i] - '0');
+    		i++; //look at next character
+			while (input[i] >= '0' && input[i] <= '9') {
+		    	number = number * 10 + (input[i] - '0');
+		   	 	i++;
+			}
+    	push(stack, number);
+    	i--; // decrement i because the outer loop will increment it
+		}
         
         else if (input[i] == '=') {
         	//printf("Finished Calculating\n");
@@ -148,8 +175,20 @@ int calculateRPN(char* input, struct Stack* stack) {
             
             // check if user is adding a negative number to the stack
             if (input[i] == '-' && input[i+1] >= '0' && input[i+1] <= '9') {
-                push(stack, (input[i+1] - '0') * -1);
-                i++;    // skip the next character (added to stack)
+                
+                // store initial number 
+                int number = (input[++i] - '0');
+                
+    			i++; //look at next character
+				while (input[i] >= '0' && input[i] <= '9') {
+		    		number = number * 10 + (input[i] - '0');
+		   		 	i++;
+					//printf("num: %d\n", number);
+		    		
+				}
+                
+                push(stack, number * -1);	// Store result as negative number
+                i--;    // decrement i because the outer loop will increment it
                 continue;
             }
 
@@ -163,7 +202,7 @@ int calculateRPN(char* input, struct Stack* stack) {
             double num2 = pop(stack);	//added to stack second
             double num1 = pop(stack);	//added to stack first
             double quotient;
-            //printf("num1: %lf num2: %lf\n", num1, num2);
+            (!debug) ? 1+1 :printf("num1: %lf num2: %lf\n", num1, num2);
             
             //printf("Step %d:  ", i);
             // perform the operation
@@ -204,7 +243,6 @@ int calculateRPN(char* input, struct Stack* stack) {
     }
     
 	//completed loop successfully, return result
-	//printf("stack pointer on exit: %p\n", (void *) stack);
 	//printf("Peeked: %ld\n", peek(stack));
 	return pop(stack);
 
