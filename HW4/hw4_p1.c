@@ -1,5 +1,5 @@
 /**
- * stackADT_LL.c - Starter code for your linked list-based Stack ADT
+ * hw4_p1.c - Linked list-based Stack ADT source code
  *
  * Author: Mosiah Beal (mosiah@pdx.edu)
  * Date:   Nov. 10, 2023
@@ -11,6 +11,9 @@
  *
  * @note (Hint) The Linked List ADT should do most of the "heavy lifting"
  *  This ADT should make use of the SLLLinkedList API as the "stack"
+ * 
+ * @note (Observation) This ADT pushes and pops long int data to and from the stack, 
+ * and doesn't support double (fractional) values, demoting data passed in.
  */
  
 // include files

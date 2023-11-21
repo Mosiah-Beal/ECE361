@@ -10,19 +10,29 @@ SRCS = $(wildcard *.c)
 # Object files (one for each source file)
 OBJS = $(SRCS:.c=.o)
 
-PROBLEM1 = test_stackADT_LL.o hw4_p1.o LinkedList.o
-PROBLEM2 = RPNcalculator.o hw4_p1.o LinkedList.o
-PROBLEM3 = RPNcalculator
+PROBLEM1 = hw4_p1.o LinkedList.o
+PROBLEM2 = RPNcalculator.o hw4_p1.o LinkedList.o float_rndm.o
+PROBLEM3 = hw4_p3.o float_rndm.o iom361_r2.o colors.o $(PROBLEM1)
 
-all: $(PROBLEM1)
+all: $(PROBLEM3)
 
-problem1: $(PROBLEM1)
+problem1: $(PROBLEM1) test_stackADT_LL.o
 	gcc $(CFLAGS) -o $@ $^
 
 problem2: $(PROBLEM2)
 	gcc $(CFLAGS) -o $@ $^
 
+problem3: $(PROBLEM3)
+	gcc $(CFLAGS) -o $@ $^
+
+
 LinkedList.o: LinkedList.c
+	gcc $(CFLAGS) -c $<
+
+float_rndm.o: float_rndm.c
+	gcc $(CFLAGS) -c $<
+
+colors.o: colors.c
 	gcc $(CFLAGS) -c $<
 
 hw4_p1.o: hw4_p1.c
@@ -33,7 +43,7 @@ RPNcalculator.o: RPNcalculator.c
 
 
 # Test cases
-test_problem1: test_stackADT_LL.o hw4_p1.o LinkedList.o
+test_problem1: test_stackADT_LL.o $(PROBLEM1)
 	gcc $(CFLAGS) -o $@ $^
 
 
