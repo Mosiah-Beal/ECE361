@@ -12,8 +12,9 @@
 #include <errno.h>
 #include <time.h>
 
-//#include "iom361_r2.h"
+#include "iom361_r2.h"
 #include "colors.h"
+#include "LinkedList.h"
 
 // typedefs, enums and constants
 typedef struct {	// data structure that combines sw and RGB LED data
@@ -27,8 +28,12 @@ typedef struct {
 
 	uint32_t temp_value;
 	uint32_t humidity_value;
+	
+	// (type) timestamp;
 
 } sensor_data_t;
+
+typedef sensor_data_t* sensor_data_t_ptr;
 
 #define MAX_DATA_ITEMS	10
 #define NUM_READINGS	8
@@ -46,7 +51,7 @@ void print_dir(void);
 int random_value(int range);
 int populate_data_array(void);
 void write_switch_to_LED(uint32_t reg_value);
-void read_sensor(void);
+void read_sensor(sensor_data_t_ptr reading);
 
 
 // global variables
@@ -54,12 +59,13 @@ uint32_t* io_base;
 iodata_t data[MAX_DATA_ITEMS];					// array to hold switch and duty cycle data
 sensor_data_t sensor_data[NUM_READINGS];		// array to hold sensor data
 
+LinkedListPtr_t sorted_temps = createLList();	// linked list to hold sorted temperatures
+LinkedListPtr_t sorted_humids = createLList();	// linked list to hold sorted humidities
+
 // main()
 int main() {
 	int rtn_code;
 	uint32_t reg_value;
-	float temp, humid;
-	uint32_t temp_value, humid_value;
 	int num_items;
 	 
 	// greet the user and display the working directory for the application
@@ -133,6 +139,10 @@ int main() {
 		
 	}
 
+	// Sensor Tests
+	float temp, humid;
+	uint32_t temp_value, humid_value;
+	
 	// set a new temperature and humidity and display it
 	printf("\nTest 4: Test the sensor\n");	 
 	_iom361_setSensor1(10.0, 63.0);
@@ -140,6 +150,9 @@ int main() {
 	temp = (temp_value / powf(2,20)) * 200.0 - 50;
 	humid_value = iom361_readReg(io_base, HUMID_REG, NULL);
 	humid = (humid_value/ pow(2, 20)) * 100;
+	printf("Temperature: %3.1fC(%08X), Relative Humidity: %3.1f%%(%08X)\n", 
+		temp, temp_value, humid, humid_value);
+		
 	
 	printf("\nTest 5: Test the random sensor value function\n");	 
 	_iom361_setSensor1_rndm(TEMP_RANGE_LOW, TEMP_RANGE_HI, HUMID_RANGE_LOW,
@@ -148,6 +161,9 @@ int main() {
 	temp = (temp_value / powf(2,20)) * 200.0 - 50;
 	humid_value = iom361_readReg(io_base, HUMID_REG, NULL);
 	humid = (humid_value/ pow(2, 20)) * 100;
+	printf("Temperature: %3.1fC(%08X), Relative Humidity: %3.1f%%(%08X)\n", 
+		temp, temp_value, humid, humid_value);
+
 	
 	printf("\nTest 5: Try a 2nd set of random numbers\n");	 
 	_iom361_setSensor1_rndm(TEMP_RANGE_LOW, TEMP_RANGE_HI, HUMID_RANGE_LOW,
@@ -156,9 +172,42 @@ int main() {
 	temp = (temp_value / powf(2,20)) * 200.0 - 50;
 	humid_value = iom361_readReg(io_base, HUMID_REG, NULL);
 	humid = (humid_value/ pow(2, 20)) * 100;
+	printf("Temperature: %3.1fC(%08X), Relative Humidity: %3.1f%%(%08X)\n", 
+		temp, temp_value, humid, humid_value);
 	
 
+	printf("\nRandom Readings\n");
 	// Now get the sensor data from the iom361 peripheral registers
+		
+	// insert a few items in the list
+	
+	int num_readings = populate_sensor_data();
+	sensor_data_t reading;
+	for (int i = 0; i < num_readings; i++){
+			reading = sensor_data[i];
+			printf("Retrieved item[%d] temp=%3.1fC(%08X), humidity=%3.1f%%(%08X)\n",
+					i, reading.temp, reading.temp_value, reading.humidity, reading.humidity_value);
+		}
+	
+	
+		printf("Inserting 5 and 2 into list...\n");
+	insertNodeInLList(LL, 5, 5);
+	insertNodeInLList(LL, 2, 5);
+    
+    // get the data from the nodes
+    long d1 = getNodeDataInLList(LL, 1); 
+    long d2 = getNodeDataInLList(LL, 2);
+    printf(" Data from the Linked list nodes are:  node(1)= %ld, node(2)= %ld\n",
+        d1, d2);
+        
+    // get a node that's not in the list.  Watch for error message
+    getNodeDataInLList(LL, 3); 
+	
+	// check that the number of elements is correct
+	// and then print them
+	printf("Number of nodes in List: %d\n", LListLength(LL));
+	printf("List contents: ");
+	printLList(LL);
 
 	return 0;
 }
@@ -177,22 +226,26 @@ void print_dir(void) {
     printf("\n");
 }
 
+int random_value(int range){
+	return (int) (rand() % range);
+}
+
  /**
   * read_sensor() - reads in data from temperature and humidity sensor
   *
   *
   *
   */
-void read_sensor(sensor_data_t* reading) {
-	float temp, humid;
-	uint32_t temp_value, humid_value;
-	reading.temp_value = iom361_readReg(io_base, TEMP_REG, NULL);
-	reading.temp = (temp_value / powf(2,20)) * 200.0 - 50;
-	reading.humidity_value = iom361_readReg(io_base, HUMID_REG, NULL);
-	reading.humidity = (humid_value/ pow(2, 20)) * 100;
+void read_sensor(sensor_data_t_ptr reading) {
+	_iom361_setSensor1_rndm(TEMP_RANGE_LOW, TEMP_RANGE_HI, HUMID_RANGE_LOW,
+		HUMID_RANGE_HI);
+	reading->temp_value = iom361_readReg(io_base, TEMP_REG, NULL);
+	reading->temp = (reading->temp_value / powf(2,20)) * 200.0 - 50;
+	reading->humidity_value = iom361_readReg(io_base, HUMID_REG, NULL);
+	reading->humidity = (reading->humidity_value/ pow(2, 20)) * 100;
 
 	//printf("Temperature: %3.1fC(%08X), Relative Humidity: %3.1f%%(%08X)\n", 
-	//	reading.temp, reading.temp_value, reading.humidity, reading.humidity_value);
+	//	reading->temp, reading->temp_value, reading->humidity, reading->humidity_value);
 }
 
  /**
@@ -259,14 +312,21 @@ int populate_sensor_data(void) {
 	// ADD YOUR TEST CASES HERE
 	srand(time(NULL));   // Initializing random number generator
 	while(num_items < NUM_READINGS) {
-		sensor_data[num_items].temp = 
-		
-		++num_items;
+		read_sensor(&sensor_data[num_items++]);	//store the reading into the struct at current index
 	}
 	
 	return num_items; 	
 }
-int random_value(int range){
-	return (int) (rand() % range);
-}
 
+void insert_temp(sensor_data_t_ptr sorted, sensor_data_t_ptr reading) {
+	
+	int i = 0;
+	// find the index to insert the reading
+	while(i < NUM_READINGS && sorted[i].temp < reading->temp) {
+		++i;
+	}
+	
+	// insert the reading using insertNodeInLList
+	insertNodeInLList(sorted_temps, reading->temp, i);
+	
+}

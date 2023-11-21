@@ -24,7 +24,7 @@
 
 // define the struct that contains a node in the linked list
 typedef struct listNode {
-	long data;	// data for the node
+	double data;	// data for the node // changed to long double
 	struct listNode *next;	// next pointer for the node
 } ListNode_t, *ListNodePtr_t;
 
@@ -38,7 +38,7 @@ typedef struct LinkedList {
 // function prototypes
 LinkedListPtr_t createLList(void);
 int LListLength(LinkedListPtr_t L);
-void insertNodeInLList(LinkedListPtr_t L, long data, int pos);
+void insertNodeInLList(LinkedListPtr_t L, double data, int pos);
 long getNodeDataInLList(LinkedListPtr_t L, int pos);
 void deleteNodeFromLLinkedList(LinkedListPtr_t L, int pos);
 void printLList(LinkedListPtr_t L);

@@ -62,7 +62,7 @@ int LListLength(LinkedListPtr_t L){
  * @param L is a Pointer to a LinkedList instance
  * @param pos is the position in the list to insert the item
  *
- * @returns	the data from the selected node as a long int
+ * @returns	the data from the selected node as a double float
  */
 long getNodeDataInLList(LinkedListPtr_t L, int pos) {
     ListNodePtr_t p = L->head;
@@ -100,7 +100,7 @@ long getNodeDataInLList(LinkedListPtr_t L, int pos) {
  *
  * @returns	void
  */
-void insertNodeInLList(LinkedListPtr_t L, long data, int pos){
+void insertNodeInLList(LinkedListPtr_t L, double data, int pos){
 	ListNodePtr_t head = L->head;
 	ListNodePtr_t q, p;
 	ListNodePtr_t newNode = (ListNodePtr_t) malloc(sizeof(ListNode_t));
@@ -201,7 +201,7 @@ void printLList(LinkedListPtr_t L) {
     }
 	
 	while(p != NULL){
-		printf("%ld ", p->data);
+		printf("%lf ", p->data);
 		p = p->next;
 	}
 	printf("\n");
