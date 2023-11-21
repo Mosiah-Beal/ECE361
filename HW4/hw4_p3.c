@@ -49,7 +49,6 @@ iodata_t data[MAX_DATA_ITEMS];	// array to hold switch and duty cycle data
 int main() {
 	int rtn_code;
 	uint32_t reg_value;
-	float temp, humid;
 	int num_items;
 	 
 	// greet the user and display the working directory for the application
@@ -121,8 +120,6 @@ int main() {
 	
 
 	// set a new temperature and humidity and display it
-	uint32_t temp_value, humid_value;
-
 	printf("\nTest 4: Test the sensor\n");	 
 	_iom361_setSensor1(10.0, 63.0);
 	read_sensor();
@@ -216,35 +213,15 @@ int populate_data_array(void) {
 	++num_items;
 	
 	// ADD YOUR TEST CASES HERE
-	data[5].sw = 0x00000000;
-	data[5].rgb.red = random_value(256); 
-	data[5].rgb.green = random_value(256); 
-	data[5].rgb.blue = random_value(256);
-	++num_items;
-	
-	data[6].sw = 0xFFFF;
-	data[6].rgb.red = random_value(256); 
-	data[6].rgb.green = random_value(256); 
-	data[6].rgb.blue = random_value(256);
-	++num_items;
-	
-	data[7].sw = 0x000F;
-	data[7].rgb.red = random_value(256); 
-	data[7].rgb.green = random_value(256); 
-	data[7].rgb.blue = random_value(256);
-	++num_items;
-	
-	data[8].sw = 0x4AC8;
-	data[8].rgb.red = random_value(256); 
-	data[8].rgb.green = random_value(256); 
-	data[8].rgb.blue = random_value(256);
-	++num_items;
-	
-	data[9].sw = 0x5A5A;
-	data[9].rgb.red = random_value(256); 
-	data[9].rgb.green = random_value(256); 
-	data[9].rgb.blue = random_value(256);
-	++num_items;
+	while(num_items < MAX_DATA_ITEMS) {
+		uint32_t random_switch = (uint32_t) rand();		//random uint32 value
+		data[num_items].sw = random_switch & 0xFFFF;	//mask lower 2 bytes
+		
+		data[num_items].rgb.red = random_value(256); 
+		data[num_items].rgb.green = random_value(256); 
+		data[num_items].rgb.blue = random_value(256);
+		++num_items;
+	}
 	
 	return num_items; 	
 }

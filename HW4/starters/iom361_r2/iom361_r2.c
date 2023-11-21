@@ -193,7 +193,7 @@ void _iom361_setSensor1(float new_temp, float new_humid){
 	uint32_t* ioreg_ptr;
 	
 	static float temp_const = powf(2, 20) / 200.0;
-	static float rh_const = powf(2,20) / 100.0;
+	static float rh_const = powf(2, 20) / 100.0;
 	
 	// per AHT20 data sheet, Temp(C) = (ST/2**20)* 200 - 50
 	// so ST = (2**20/200) * (Temp(C) + 50)

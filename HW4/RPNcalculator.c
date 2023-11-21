@@ -77,14 +77,15 @@ int main() {
 		stack = getNewStack(&stack);
 		
 		// fractional tests
+		/*
 		char* result1 = " 2 2 4 / * =";		// 2/4 -> 0 : 2*0 -> 0
 		char* result_n3 = " 3 2 / 9 2 / - =";	// 9/2 -> 4 : 1-4 -> -3
 		
-		//assert(calculateRPN(result1, stack) == 1);
-		//assert(calculateRPN(result1, stack) == 1);	
+		assert(calculateRPN(result1, stack) == 1);
+		assert(calculateRPN(result1, stack) == 1);	
 		// I realized that push is demoting the data from a double into a long int :( 
 		//fractional results are not possible with the given prototypes in the stackADT header.
-		
+		*/
 
 		// power tests
 		char* result25 = " 5 2 ^ = ";
