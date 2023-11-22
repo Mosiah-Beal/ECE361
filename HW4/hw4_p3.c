@@ -136,16 +136,24 @@ int main() {
 		}
 		printf("INFO(main()]: There are %d data items to send to I/O module\n", num_items);
 		
-		// sending the data to the iom361 peripheral registers
 		
+		printf("\nTest 2: Test the switches and leds\n");
+		// sending the data to the iom361 peripheral registers
 		for (int i = 0; i < num_items; i++) {
-			// ADD YOUR CODE TO SEND DATA TO iom361 peripheral registers
 			printf("\nSENDING ITEM %d to I/O MODULE...\n", i);
-			
+
 			// Set switch register
 			//printf("\tsetting switches to %08X\n", data[i].sw); 
 			write_switch_to_LED(data[i].sw);
-			
+
+			sleep(3);
+		}
+
+		// set the duty cycles of the RGB LED
+		printf("\nTest 3: Test the RGB LED\n");	
+		for (int i = 0; i < num_items; i++) {
+			printf("\nSENDING ITEM %d to I/O MODULE...\n", i);
+
 			// Set RGB register
 			reg_value = makeRGBLedReg(data[i].rgb, true);
 			//printf("\tsetting RGB value to %08X\n", reg_value);
@@ -153,7 +161,7 @@ int main() {
 			if (rtn_code != 0) {
 				printf("ERROR(main): Could not write RGB LED register\n");
 			}
-			
+
 			sleep(3);
 		}
 		
@@ -227,6 +235,7 @@ int main() {
 	printf("Sorted Temps: (low to high)\n");
 	printSortedTemps(sorted_temps);
 	
+	printf("\n");
 	printf("Sorted Humidities: (low to high)\n");
 	printSortedHumid(sorted_humid);
 
@@ -525,12 +534,11 @@ void printSortedTemps(LinkedListPtr_t sorted) {
 	//printf("len = %d\n", list_len);
 	for(int i = 0; i < list_len; i++) {
 		double temp = getNodeDataInLList(sorted, i+1);
-		printf("%3.1lfC ", temp);
+		printf("\tT[%d] = %3.1lfC ", i, temp);
 		printf("(%08X)\n", temp_to_temp_value(temp));
 		avg_temp += temp;
 	}
-	printf("\n");
-	printf("Average Temperature = %lf\n", (double) avg_temp / list_len);
+	printf("Average Temperature = %gC\n", (double) avg_temp / list_len);
 }
 
 /**
@@ -548,10 +556,9 @@ void printSortedHumid(LinkedListPtr_t sorted) {
 	//printf("len = %d\n", list_len);
 	for(int i = 0; i < list_len; i++) {
 		double humid = getNodeDataInLList(sorted, i+1);
-		printf("%3.1lf%% ", humid);
+		printf("\tH[%d] = %3.1lf%% ", i, humid);
 		printf("(%08X)\n", humid_to_humid_value(humid));
 		avg_humid += humid;
 	}
-	printf("\n");
-	printf("Average Humidity = %lf%%\n", (double) avg_humid / list_len);
+	printf("Average Humidity = %g%%\n", (double) avg_humid / list_len);
 }

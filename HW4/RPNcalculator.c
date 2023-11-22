@@ -105,7 +105,7 @@ int main() {
 	stack = getNewStack(&stack);
 	
 	
-	// User test cases
+	// Calculate user input
     char *input = malloc(100 * sizeof(char));
     do{
 		// Get input from user
@@ -115,15 +115,39 @@ int main() {
 		// remove newline
 		input[strcspn(input, "\n")] = 0;
 		
+		// trim input after '=' character if it exists
+		char* equals_sign = strchr(input, '=');
+		if (equals_sign != NULL) {
+			*(equals_sign+1) = '\0';
+		}
+		
 		// Perform the calculations
-		printf("%s %g\n", input, calculateRPN(input, stack)); 
-		stack = getNewStack(&stack);
-	} while((strcmp(input, "q") != 0) && (strcmp(input, "Q") != 0)); //exit on q/Q
+		double result = calculateRPN(input, stack);
+		
+		// Check for errors/exit codes
+		if (isnan(result)) {
+			// user entered invalid character
+			break;
+		}
+		else if (result == HUGE_VAL) {
+			// user entered invalid expression
+			stack = getNewStack(&stack);
+			continue;
+		}
 
+		// Display output to user and create new stack
+		printf("%s %g\n", input, result); 
+		stack = getNewStack(&stack);
+	} while(true); //exit on invalid character
+
+	deleteStack(stack);
     return 0;
 }
 
-
+/**
+ * print_dir - prints the current working directory
+ * 
+ */
 void print_dir(void) {
     errno = 0;
     char *buf = getcwd(NULL, 0);    // allocates a buffer to hold the path   
@@ -138,16 +162,23 @@ void print_dir(void) {
     printf("\n");
 }
 
+/**
+ * calculateRPN - calculates the result of a string of numbers and operators
+ * 
+ * @param input - the string of numbers and operators
+ * @param stack - the stack to use for the calculation
+ * @return the result of the calculation
+ *
+ * Description: 
+ * This function takes in a string of numbers and operators and calculates the result of the expression.
+ * It uses a stack to store the numbers and perform the operations.
+ *
+ */
 double calculateRPN(char* input, struct Stack* stack) {
      //echo input
      //printf("You input: %s\n", input);
      
      //debug = true;
-     
-     // Check if user is trying to quit
-	if ((strcmp(input, "q") == 0) || (strcmp(input, "Q") == 0)){
-		return 0;
-	}
     	
      // loop through the string of numbers and operators 
      //check that integer division doesn't break it
@@ -178,6 +209,7 @@ double calculateRPN(char* input, struct Stack* stack) {
         
         else if (input[i] == '=') {
         	//printf("Finished Calculating\n");
+			//printf("Peeked: %lf\n", peek(stack));
         	break;
         }
         // if the character is an operator, pop two numbers off the stack and
@@ -207,7 +239,7 @@ double calculateRPN(char* input, struct Stack* stack) {
             // check if there are at least two numbers on the stack
             if (size(stack) < 2) {
                 printf("Invalid expression\n");
-                return INT_MIN;
+                return HUGE_VAL;
             }
             
             // pop the two numbers off the stack
@@ -246,11 +278,11 @@ double calculateRPN(char* input, struct Stack* stack) {
                     break;
             }
         }
-        // if the character is not a number or operator, print an error
+        // if the character is not a number or operator, print an error and exit
         else {
-            printf("Invalid character found: %c\n", input[i]);
-            printf("Has value: %d\n", input[i]);
-            
+            //printf("Invalid character found: %c\n", input[i]);
+            //printf("Has value: %d\n", input[i]);
+            return NAN;
         }
     }
     
@@ -260,8 +292,19 @@ double calculateRPN(char* input, struct Stack* stack) {
 
 }
 
+/**
+ * getNewStack - deletes the old stack and creates a new one
+ * 
+ * @param stack - the stack to delete
+ * @return the new stack
+ *
+ * Description: 
+ * This function deletes the old stack and creates a new one.
+ *
+ */
 struct Stack* getNewStack(struct Stack** stack) {
     deleteStack(*stack);
     *stack = createStack();
     return *stack;
     }
+

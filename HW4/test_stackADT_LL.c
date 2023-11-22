@@ -1,8 +1,8 @@
 /**
  * test_stackADT_LL.c - Starter code for a program to test your stack ADT
  *
- * @author: <your name> (<your email address>)
- * @date:   <date>
+ * @author: Mosiah Beal (mosiah@pdx.edu)
+ * @date:   Nov 12, 2023
  *
  * This is the a test program for the linked list-based stack that you are writing.  You may find
  * it useful for testing your stack ADT implementation. 
@@ -41,11 +41,11 @@ int main(){
         push(stk, i);
     }
 
-    printf("Top element is %ld\n", peek(stk));
+    printf("Top element is %g\n", peek(stk));
     printf("Stack size is %d\n", size(stk));
 
     for (i = 0; i <= 10; i++){
-        printf("Popped element is %ld\n", pop(stk));
+        printf("Popped element is %g\n", pop(stk));
     }
 
     if (isEmpty(stk))
