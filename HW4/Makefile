@@ -23,7 +23,7 @@ problem1: $(PROBLEM1) test_stackADT_LL.o
 problem2: $(PROBLEM2) float_rndm.o
 	gcc $(CFLAGS) -o $@ $^
 
-problem3: $(PROBLEM3)
+problem3: $(PROBLEM3) LinkedList.o
 	gcc $(CFLAGS) -o $@ $^
 
 

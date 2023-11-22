@@ -49,9 +49,22 @@ typedef sensor_data_t* sensor_data_t_ptr;
 //prototypes
 void print_dir(void);
 int random_value(int range);
+
 int populate_data_array(void);
+int populate_sensor_data(void);
+
 void write_switch_to_LED(uint32_t reg_value);
 void read_sensor(sensor_data_t_ptr reading);
+
+int insert_temp(LinkedListPtr_t sorted, double temp);
+int insert_humid(LinkedListPtr_t sorted, double humidity);
+
+uint32_t temp_to_temp_value(float temp);
+uint32_t humid_to_humid_value(float humid);
+
+void printSortedTemps(LinkedListPtr_t sorted);
+void printSortedHumid(LinkedListPtr_t sorted);
+
 
 
 // global variables
@@ -59,9 +72,7 @@ uint32_t* io_base;
 iodata_t data[MAX_DATA_ITEMS];					// array to hold switch and duty cycle data
 sensor_data_t sensor_data[NUM_READINGS];		// array to hold sensor data
 
-LinkedListPtr_t sorted_temps, sorted_humids;
-sorted_temps = createLList();	// linked list to hold sorted temperatures
-sorted_humids = createLList();	// linked list to hold sorted humidities
+
 
 // main()
 int main() {
@@ -99,7 +110,7 @@ int main() {
 	num_items = populate_data_array();
 	
 	// Show contents of data array
-	if(false) {
+	if(true) {
 		
 		// display the contents of the data array
 		printf("SHOWING DATA...\n");
@@ -179,37 +190,42 @@ int main() {
 
 	printf("\nRandom Readings\n");
 	// Now get the sensor data from the iom361 peripheral registers
-		
-	// insert a few items in the list
+	LinkedListPtr_t sorted_temps = createLList();	// Linked List to hold sorted temperatures
+	LinkedListPtr_t sorted_humid = createLList();	// Linked List to hold sorted humidities
 	
 	int num_readings = populate_sensor_data();
+	int temp_node_index;
+	int humid_node_index;
+	// insert a few items in the list
+	
 	sensor_data_t reading;
 	for (int i = 0; i < num_readings; i++){
 			reading = sensor_data[i];
-			printf("Retrieved item[%d] temp=%3.1fC(%08X), humidity=%3.1f%%(%08X)\n",
+			printf("Retrieved reading[%d] temp=%3.1fC(%08X), humidity=%3.1f%%(%08X)\n",
 					i, reading.temp, reading.temp_value, reading.humidity, reading.humidity_value);
+			
+			// sort the data
+			//printf("\nInserting data\n");
+			temp_node_index = insert_temp(sorted_temps, reading.temp);
+			humid_node_index = insert_humid(sorted_humid, reading.humidity);
+			
+			//printf("Inserted %3.1lfC at node %d: (of %d)\n", reading.temp, temp_node_index, LListLength(sorted_temps)+1);
+			
+			//printf("Inserted %lf%% at node %d: (of %d)\n", reading.humidity, humid_node_index, LListLength(sorted_temps)+1);
 		}
 	
+	// Look at sorted lists
+	printf("\n\n");
+	printf("Sorted Temps: (low to high)\n");
+	printSortedTemps(sorted_temps);
 	
-		printf("Inserting 5 and 2 into list...\n");
-	insertNodeInLList(LL, 5, 5);
-	insertNodeInLList(LL, 2, 5);
-    
-    // get the data from the nodes
-    long d1 = getNodeDataInLList(LL, 1); 
-    long d2 = getNodeDataInLList(LL, 2);
-    printf(" Data from the Linked list nodes are:  node(1)= %ld, node(2)= %ld\n",
-        d1, d2);
-        
-    // get a node that's not in the list.  Watch for error message
-    getNodeDataInLList(LL, 3); 
-	
-	// check that the number of elements is correct
-	// and then print them
-	printf("Number of nodes in List: %d\n", LListLength(LL));
-	printf("List contents: ");
-	printLList(LL);
+	printf("Sorted Humidities: (low to high)\n");
+	printSortedHumid(sorted_humid);
 
+	// Free lists from memory
+	deleteLList(sorted_temps);
+	deleteLList(sorted_humid);
+	
 	return 0;
 }
  
@@ -229,6 +245,16 @@ void print_dir(void) {
 
 int random_value(int range){
 	return (int) (rand() % range);
+}
+
+uint32_t temp_to_temp_value(float temp) {
+    uint32_t temp_value = (temp + 50) / 200.0 * powf(2,20);
+    return temp_value;
+}
+
+uint32_t humid_to_humid_value(float humid) {
+    uint32_t humid_value = humid / 100.0 * powf(2,20);
+    return humid_value;
 }
 
  /**
@@ -319,15 +345,130 @@ int populate_sensor_data(void) {
 	return num_items; 	
 }
 
-void insert_temp(sensor_data_t_ptr sorted, sensor_data_t_ptr reading) {
+/**
+  * insert_temp() - inserts a temperature reading into a sorted linked list
+  * @param sorted: a pointer to the sorted linked list
+  * @param temp: the temperature reading to insert
+  * @return: the index at which the reading was inserted
+  */
+
+
+int insert_temp(LinkedListPtr_t sorted, double temp) {
+	int list_len = LListLength(sorted);
 	
-	int i = 0;
+	if(list_len == 0) {
+		// if the list is empty, insert the reading at the head
+		insertNodeInLList(sorted, temp, 1);
+		return 1;
+	}
+
+	int i = 1;
 	// find the index to insert the reading
-	while(i < NUM_READINGS && sorted[i].temp < reading->temp) {
-		++i;
+	
+	//printf("list_len: %d\n", list_len);
+	//printf("temp: %lf\n", temp);
+	
+	//while (not at end of list)
+	while(i <= list_len) {
+	
+	double current_temp = getNodeDataInLList(sorted, i);
+	//printf("current_temp: %lf\n", current_temp);
+	
+
+	// if temp > temp at current index, increment index
+	if (temp >= current_temp) {
+		//printf("%lf >= sorted[%d]: %lf\n", temp, i, getNodeDataInLList(sorted, i));
+		i++;
+		continue;
+	}
+	// else insert temp at current index
+	  else {
+		//printf("\n%lf < sorted[%d]: %lf\n", temp, i, getNodeDataInLList(sorted, i));
+		//printf("Inserted %lfC at index %d\n", temp, i);
+		insertNodeInLList(sorted, temp, i);
+		return i;
+	}
 	}
 	
-	// insert the reading using insertNodeInLList
-	insertNodeInLList(sorted_temps, reading->temp, i);
+	// At end of list, insert temp at end
+	//printf("%lfC > sorted[%d]: %lf\n", temp, i, getNodeDataInLList(sorted, i-1));
+	insertNodeInLList(sorted, temp, i);
+	return i;
+}
+
+/**
+  * insert_humid() - inserts a humidity reading into a sorted linked list
+  * @param sorted: a pointer to the sorted linked list
+  * @param humidity: the humidity reading to insert
+  * @return: the index at which the reading was inserted
+  */
+int insert_humid(LinkedListPtr_t sorted, double humidity) {
+	int list_len = LListLength(sorted);
 	
+	if(list_len == 0) {
+		// if the list is empty, insert the reading at the head
+		insertNodeInLList(sorted, humidity, 1);
+		return 1;
+	}
+
+	int i = 1;
+	// find the index to insert the reading
+	
+	//printf("list_len: %d\n", list_len);
+	//printf("humidity: %lf\n", humidity);
+	
+	//while (not at end of list)
+	while(i <= list_len) {
+	
+	double current_humidity = getNodeDataInLList(sorted, i);
+	//printf("current_humidity: %lf\n", current_humidity);
+	
+
+	// if humidity > humidity at current index, increment index
+	if (humidity >= current_humidity) {
+		//printf("%lf >= sorted[%d]: %lf\n", humidity, i, getNodeDataInLList(sorted, i));
+		i++;
+		continue;
+	}
+	// else insert humidity at current index
+	  else {
+		//printf("\n%lf < sorted[%d]: %lf\n", humidity, i, getNodeDataInLList(sorted, i));
+		//printf("Inserted %lf%% at index %d\n", humidity, i);
+		insertNodeInLList(sorted, humidity, i);
+		return i;
+	}
+	}
+	
+	// At end of list, insert humidity at end
+	//printf("%lf%% > sorted[%d]: %lf\n", humidity, i, getNodeDataInLList(sorted, i-1));
+	insertNodeInLList(sorted, humidity, i);
+	return i;
+}
+
+void printSortedTemps(LinkedListPtr_t sorted) {
+	int list_len = LListLength(sorted);
+	double avg_temp = 0;
+	//printf("len = %d\n", list_len);
+	for(int i = 0; i < list_len; i++) {
+		double temp = getNodeDataInLList(sorted, i+1);
+		printf("%3.1lfC ", temp);
+		printf("(%08X)\n", temp_to_temp_value(temp));
+		avg_temp += temp;
+	}
+	printf("\n");
+	printf("Average Temperature = %lf\n", (double) avg_temp / list_len);
+}
+
+void printSortedHumid(LinkedListPtr_t sorted) {
+	int list_len = LListLength(sorted);
+	double avg_humid = 0;
+	//printf("len = %d\n", list_len);
+	for(int i = 0; i < list_len; i++) {
+		double humid = getNodeDataInLList(sorted, i+1);
+		printf("%3.1lf%% ", humid);
+		printf("(%08X)\n", humid_to_humid_value(humid));
+		avg_humid += humid;
+	}
+	printf("\n");
+	printf("Average Humidity = %lf%%\n", (double) avg_humid / list_len);
 }
