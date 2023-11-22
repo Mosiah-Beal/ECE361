@@ -1,7 +1,15 @@
 /**
+ * hw4_p3.c
+ *
  * Author: Mosiah Beal (mosiah@pdx.edu)
  * Date:   Nov. 16, 2023
  * 
+ * Description:
+ * This program tests the iom361 peripheral registers by "hardwiring" switch
+ * and RGB LED data and sending it to the peripheral registers.
+ * It also tests the temperature and humidity sensor by reading in data from 
+ * the sensor and storing it in an array. It then sorts the data and prints
+ * it to the console.
  * 
  */
 
@@ -46,7 +54,7 @@ typedef sensor_data_t* sensor_data_t_ptr;
 #define HUMID_RANGE_HI	87.3
   
   
-//prototypes
+// function prototypes
 void print_dir(void);
 int random_value(int range);
 
@@ -69,8 +77,8 @@ void printSortedHumid(LinkedListPtr_t sorted);
 
 // global variables
 uint32_t* io_base;
-iodata_t data[MAX_DATA_ITEMS];					// array to hold switch and duty cycle data
-sensor_data_t sensor_data[NUM_READINGS];		// array to hold sensor data
+iodata_t data[MAX_DATA_ITEMS];				// array to hold switch and duty cycle data
+sensor_data_t sensor_data[NUM_READINGS];	// array to hold sensor data
 
 
 
@@ -189,18 +197,18 @@ int main() {
 	
 
 	printf("\nRandom Readings\n");
-	// Now get the sensor data from the iom361 peripheral registers
 	LinkedListPtr_t sorted_temps = createLList();	// Linked List to hold sorted temperatures
 	LinkedListPtr_t sorted_humid = createLList();	// Linked List to hold sorted humidities
 	
+	// Now get the sensor data from the iom361 peripheral registers
 	int num_readings = populate_sensor_data();
-	int temp_node_index;
-	int humid_node_index;
-	// insert a few items in the list
+	int temp_node_index;	// index at which the temperature was inserted
+	int humid_node_index;	// index at which the humidity was inserted
 	
-	sensor_data_t reading;
+	
+	sensor_data_t reading;	// struct to hold the sensor data
 	for (int i = 0; i < num_readings; i++){
-			reading = sensor_data[i];
+			reading = sensor_data[i];	// store the reading into the struct
 			printf("Retrieved reading[%d] temp=%3.1fC(%08X), humidity=%3.1f%%(%08X)\n",
 					i, reading.temp, reading.temp_value, reading.humidity, reading.humidity_value);
 			
@@ -229,6 +237,12 @@ int main() {
 	return 0;
 }
  
+/**
+ * print_dir() - prints the current working directory
+ * 
+ * This function prints the current working directory to the console.
+ *
+ */
 void print_dir(void) {
     errno = 0;
     char *buf = getcwd(NULL, 0);    // allocates a buffer to hold the path   
@@ -243,15 +257,45 @@ void print_dir(void) {
     printf("\n");
 }
 
+/**
+ * random_value() - generates a random value between 0 and range
+ * 
+ * @param range: the upper bound of the random value
+ * @return the random value
+ * 
+ * This function takes an upper bound and generates a random value between 0 and
+ * the upper bound.
+ *
+ */
 int random_value(int range){
 	return (int) (rand() % range);
 }
 
+/**
+ * temp_to_temp_value() - converts a temperature value to a temperature register value
+ * 
+ * @param temp: the temperature value to convert
+ * @return the temperature register value
+ * 
+ * This function takes a temperature value and converts it back to a temperature register
+ * value
+ *
+ */
 uint32_t temp_to_temp_value(float temp) {
     uint32_t temp_value = (temp + 50) / 200.0 * powf(2,20);
     return temp_value;
 }
 
+/**
+ * humid_to_humid_value() - converts a humidity value to a humidity register value
+ * 
+ * @param humid: the humidity value to convert
+ * @return the humidity register value
+ * 
+ * This function takes a humidity value and converts it back to a humidity register
+ * value
+ *
+ */
 uint32_t humid_to_humid_value(float humid) {
     uint32_t humid_value = humid / 100.0 * powf(2,20);
     return humid_value;
@@ -259,8 +303,10 @@ uint32_t humid_to_humid_value(float humid) {
 
  /**
   * read_sensor() - reads in data from temperature and humidity sensor
-  *
-  *
+  * @param reading: a pointer to the sensor_data_t struct to store the reading
+  * 
+  * This function reads in data from the temperature and humidity sensor and
+  * stores it in the sensor_data_t struct passed in.
   *
   */
 void read_sensor(sensor_data_t_ptr reading) {
@@ -277,6 +323,7 @@ void read_sensor(sensor_data_t_ptr reading) {
 
  /**
   * write_switch_to_LED() - sets switches and LEDs to value passed in
+  * @param reg_value: the value to set the switches and LEDs to
   *
   * This function takes a uint32 value and writes it to the switches register.
   * It then reads the switches register and writes the value read in to the
@@ -292,8 +339,10 @@ void write_switch_to_LED(uint32_t reg_value) {
 
  /**
   * populate_data_array() - "hardwires" switch and RGB duty cycle data
+  * @return: the number of items in the data array
   *
   * This function populates the data array with switch and duty cycle values
+  * to be sent to the iom361 peripheral registers.
   *
   */
 int populate_data_array(void) {
@@ -333,6 +382,14 @@ int populate_data_array(void) {
 	return num_items; 	
 }
 
+ /**
+  * populate_sensor_data() - "hardwires" sensor data
+  * @return: the number of items in the sensor_data array
+  *
+  * This function populates the sensor_data array with temperature and humidity
+  * values to be sorted.
+  *
+  */
 int populate_sensor_data(void) {
 	int num_items = 0;
 	
@@ -350,9 +407,12 @@ int populate_sensor_data(void) {
   * @param sorted: a pointer to the sorted linked list
   * @param temp: the temperature reading to insert
   * @return: the index at which the reading was inserted
+  * 
+  * This function takes a pointer to a sorted linked list and a temperature
+  * reading and inserts the reading into the list in sorted order. It returns
+  * the index at which the reading was inserted.
+  *
   */
-
-
 int insert_temp(LinkedListPtr_t sorted, double temp) {
 	int list_len = LListLength(sorted);
 	
@@ -401,6 +461,11 @@ int insert_temp(LinkedListPtr_t sorted, double temp) {
   * @param sorted: a pointer to the sorted linked list
   * @param humidity: the humidity reading to insert
   * @return: the index at which the reading was inserted
+  *
+  * This function takes a pointer to a sorted linked list and a humidity
+  * reading and inserts the reading into the list in sorted order. It returns
+  * the index at which the reading was inserted.
+  *
   */
 int insert_humid(LinkedListPtr_t sorted, double humidity) {
 	int list_len = LListLength(sorted);
@@ -445,6 +510,15 @@ int insert_humid(LinkedListPtr_t sorted, double humidity) {
 	return i;
 }
 
+/**
+  * printSortedTemps() - prints the sorted temperatures
+  * @param sorted: a pointer to the sorted linked list
+  *
+  * This function takes a pointer to a sorted linked list and prints the
+  * temperatures in the list.
+  * It also prints the average temperature.
+  *
+  */
 void printSortedTemps(LinkedListPtr_t sorted) {
 	int list_len = LListLength(sorted);
 	double avg_temp = 0;
@@ -459,6 +533,15 @@ void printSortedTemps(LinkedListPtr_t sorted) {
 	printf("Average Temperature = %lf\n", (double) avg_temp / list_len);
 }
 
+/**
+  * printSortedHumid() - prints the sorted humidities
+  * @param sorted: a pointer to the sorted linked list
+  *
+  * This function takes a pointer to a sorted linked list and prints the
+  * humidities in the list.
+  * It also prints the average humidity.
+  *
+  */
 void printSortedHumid(LinkedListPtr_t sorted) {
 	int list_len = LListLength(sorted);
 	double avg_humid = 0;
