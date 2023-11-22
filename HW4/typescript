@@ -1,0 +1,62 @@
+Script started on Tue 21 Nov 2023 11:30:54 PM PST
+[?1034hbash-4.2$ whoami
+mosiah
+bash-4.2$ pwd
+/u/mosiah/Desktop/ECE 361 Folder/ECE361/HW4
+bash-4.2$ make al[K[K[K
+gcc -Wall -std=c99 -lm -c hw4_p1.c
+gcc -Wall -std=c99 -lm -c LinkedList.c
+gcc -Wall -std=c99 -lm -c test_stackADT_LL.c
+gcc -Wall -std=c99 -lm -o problem1 hw4_p1.o LinkedList.o test_stackADT_LL.o
+gcc -Wall -std=c99 -lm -c RPNcalculator.c
+gcc -Wall -std=c99 -lm -c float_rndm.c
+gcc -Wall -std=c99 -lm -o problem2 RPNcalculator.o hw4_p1.o LinkedList.o float_rndm.o
+gcc -Wall -std=c99 -lm -c hw4_p3.c
+[01m[Khw4_p3.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[Khw4_p3.c:214:6:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Khumid_node_index[m[K’ set but not used [-Wunused-but-set-variable]
+  int humid_node_index; // index at which the humidity was inserted
+[01;32m[K      ^[m[K
+[01m[Khw4_p3.c:213:6:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Ktemp_node_index[m[K’ set but not used [-Wunused-but-set-variable]
+  int temp_node_index; // index at which the temperature was inserted
+[01;32m[K      ^[m[K
+gcc -Wall -std=c99 -lm -c iom361_r2.c
+[01m[Kiom361_r2.c:[m[K In function ‘[01m[K_iom361_setSensor1[m[K’:
+[01m[Kiom361_r2.c:195:28:[m[K [01;35m[Kwarning: [m[Kinitializer element is not a constant expression [enabled by default]
+  static float temp_const = powf(2, 20) / 200.0;
+[01;32m[K                            ^[m[K
+[01m[Kiom361_r2.c:196:26:[m[K [01;35m[Kwarning: [m[Kinitializer element is not a constant expression [enabled by default]
+  static float rh_const = powf(2,20) / 100.0;
+[01;32m[K                          ^[m[K
+gcc -Wall -std=c99 -lm -c colors.c
+gcc -Wall -std=c99 -lm -o problem3 hw4_p3.o float_rndm.o iom361_r2.o colors.o hw4_p1.o LinkedList.o
+bash-4.2$ ls *.o
+colors.o      hw4_p1.o	iom361_r2.o   RPNcalculator.o
+float_rndm.o  hw4_p3.o	LinkedList.o  test_stackADT_LL.o
+bash-4.2$ ls *.o[Kc
+colors.c      hw4_p2.c	   LinkedList.c      test_LinkedList.c
+float_rndm.c  hw4_p3.c	   RPNcalculator.c   test_stackADT_LL.c
+hw4_p1.c      iom361_r2.c  test_iom361_r2.c
+bash-4.2$ ls *.c[Kh
+colors.h  float_rndm.h	iom361_r2.h  LinkedList.h  stackADT_LL.h
+bash-4.2$ ls
+colors.c      hw4_p2.c			   iom361_r2.o	 RPNcalculator.c
+colors.h      hw4_p3.c			   LinkedList.c  RPNcalculator.o
+colors.o      hw4_p3.o			   LinkedList.h  stackADT_LL.h
+float_rndm.c  hw4_Problem1_transcript.txt  LinkedList.o  test_iom361_r2.c
+float_rndm.h  hw4_Problem2_transcript.txt  Makefile	 test_LinkedList.c
+float_rndm.o  hw4_Problem3_transcript.txt  problem1	 test_stackADT_LL.c
+hw4_p1.c      iom361_r2.c		   problem2	 test_stackADT_LL.o
+hw4_p1.o      iom361_r2.h		   problem3	 typescript
+bash-4.2$ make clean
+rm -f *.o problem1 problem2 problem3 test_problem1a test_problem1b test_problem3
+bash-4.2$ ls
+colors.c      hw4_p3.c			   LinkedList.c      test_LinkedList.c
+colors.h      hw4_Problem1_transcript.txt  LinkedList.h      test_stackADT_LL.c
+float_rndm.c  hw4_Problem2_transcript.txt  Makefile	     typescript
+float_rndm.h  hw4_Problem3_transcript.txt  RPNcalculator.c
+hw4_p1.c      iom361_r2.c		   stackADT_LL.h
+hw4_p2.c      iom361_r2.h		   test_iom361_r2.c
+bash-4.2$ exit
+exit
+
+Script done on Tue 21 Nov 2023 11:31:46 PM PST

@@ -1,0 +1,41 @@
+Script started on Tue 21 Nov 2023 10:57:33 PM PST
+[?1034hbash-4.2$ whoami
+mosiah
+bash-4.2$ pwd
+/u/mosiah/Desktop/ECE 361 Folder/ECE361/HW4
+bash-4.2$ make problem2
+gcc -Wall -std=c99 -lm -c RPNcalculator.c
+gcc -Wall -std=c99 -lm -c hw4_p1.c
+gcc -Wall -std=c99 -lm -c LinkedList.c
+gcc -Wall -std=c99 -lm -c float_rndm.c
+gcc -Wall -std=c99 -lm -o problem2 RPNcalculator.o hw4_p1.o LinkedList.o float_rndm.o
+bash-4.2$ ./problem2 
+Current working directory: /home/mosiah/common/Desktop/ECE 361 Folder/ECE361/HW4
+
+Enter a string of numbers and operators: 1 2 3 * + =
+1 2 3 * + = 7
+Enter a string of numbers and operators: 1 2 + 3 4 ++ =
+1 2 + 3 4 ++ = 10
+Enter a string of numbers and operators: 5 8 * 4 9 - / =
+5 8 * 4 9 - / = -8
+Enter a string of numbers and operators: 5 8* 9 4-/=
+5 8* 9 4-/= 8
+Enter a string of numbers and operators: 5 -8* 4 9 -/ =
+5 -8* 4 9 -/ = 8
+Enter a string of numbers and operators: -5 -10 + -5 -5 - + =
+-5 -10 + -5 -5 - + = -15
+Enter a string of numbers and operators: 2 2 4 / * =
+2 2 4 / * = 1
+Enter a string of numbers and operators: 3 2 / 9 2 / - =
+3 2 / 9 2 / - = -3
+Enter a string of numbers and operators: 5 2 ^ =
+5 2 ^ = 25
+Enter a string of numbers and operators: 3 3 ^ =
+3 3 ^ = 27
+Enter a string of numbers and operators: -3 3 ^ -9 / -5 + =
+-3 3 ^ -9 / -5 + = -2
+Enter a string of numbers and operators: q
+bash-4.2$ exit
+exit
+
+Script done on Tue 21 Nov 2023 11:02:51 PM PST

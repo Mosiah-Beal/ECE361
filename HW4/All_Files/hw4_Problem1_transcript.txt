@@ -1,0 +1,76 @@
+Script started on Tue 21 Nov 2023 10:32:35 PM PST
+[?1034hbash-4.2$ whoami
+mosiah
+bash-4.2$ pwd
+/u/mosiah/Desktop/ECE 361 Folder/ECE361/HW4
+bash-4.2$ make test_problem1a
+gcc -Wall -std=c99 -lm -c test_LinkedList.c
+gcc -Wall -std=c99 -lm -c hw4_p1.c
+gcc -Wall -std=c99 -lm -c LinkedList.c
+gcc -Wall -std=c99 -lm -o test_problem1a test_LinkedList.o hw4_p1.o LinkedList.o
+bash-4.2$ ./test_problem1a 
+Linked List ADT test program (RK)
+
+Created a new Linked List
+Number of nodes in List: 0
+Inserting 5 and 2 into list...
+ Data from the Linked list nodes are:  node(1)= 5, node(2)= 2
+ERROR: LinkedList ADT(getNodeDataInLList): Position 3 is not in the list
+Number of nodes in List: 2
+List contents: 5.000000 2.000000 
+Deleting a node from list...
+Number of nodes in List: 1
+List contents: 2.000000 
+
+bash-4.2$ make problem1
+gcc -Wall -std=c99 -lm -c test_stackADT_LL.c
+gcc -Wall -std=c99 -lm -o problem1 hw4_p1.o LinkedList.o test_stackADT_LL.o
+bash-4.2$ ./problem1 
+Minimal test program for the stack ADT
+Current working directory: /home/mosiah/common/Desktop/ECE 361 Folder/ECE361/HW4
+
+
+Top element is 10
+Stack size is 11
+Popped element is 10
+Popped element is 9
+Popped element is 8
+Popped element is 7
+Popped element is 6
+Popped element is 5
+Popped element is 4
+Popped element is 3
+Popped element is 2
+Popped element is 1
+Popped element is 0
+Stack is empty
+bash-4.2$ ls *.o
+hw4_p1.o  LinkedList.o	test_LinkedList.o  test_stackADT_LL.o
+bash-4.2$ exit
+exit
+
+**********************
+Explanation for part 2
+**********************
+Disclaimer: I changed the starter files involving the LinkedList headers so I could push and pop
+doubles instead of long ints. I used the %g printf format specifier, which prints the shortest
+representation of the number. It shouldn't change anything visually, but the data types may be
+slightly different from the default solutions.
+
+
+for(i = 0; i <= 10; i++) { push(stk, i); }
+The data pushed in order was 0, 1, 2, ..., 8, 9, 10.
+
+printf("Top element is %g\n", peek(stk));
+The top of the stack would hold 10 since it was pushed last and 0 would be at the bottom.
+
+printf("Stack size is %d\n", size(stk));
+There would be 11 total elements (nodes) on the stack since we pushed 11 times (0-9 + 10)
+
+for (i = 0; i <= 10; i++) { printf("Popped element is %g\n", pop(stk)); }
+As we loop we are popping elements off of the stack one at a time. 
+10, 9, 8, ..., 2, 1, 0.
+
+After popping off 0, the stack is empty and has no elements (nodes) left
+
+Script done on Tue 21 Nov 2023 10:37:19 PM PST

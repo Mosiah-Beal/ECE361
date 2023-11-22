@@ -1,0 +1,438 @@
+Script started on Tue 21 Nov 2023 11:05:18 PM PST
+[?1034hbash-4.2$ whoami
+mosiah
+bash-4.2$ pwd
+/u/mosiah/Desktop/ECE 361 Folder/ECE361/HW4
+bash-4.2$ make test_problem3
+gcc -Wall -std=c99 -lm -c test_iom361_r2.c
+gcc -Wall -std=c99 -lm -c float_rndm.c
+gcc -Wall -std=c99 -lm -c iom361_r2.c
+[01m[Kiom361_r2.c:[m[K In function ‘[01m[K_iom361_setSensor1[m[K’:
+[01m[Kiom361_r2.c:195:28:[m[K [01;35m[Kwarning: [m[Kinitializer element is not a constant expression [enabled by default]
+  static float temp_const = powf(2, 20) / 200.0;
+
+[01;32m[K                            ^[m[K
+[01m[Kiom361_r2.c:196:26:[m[K [01;35m[Kwarning: [m[Kinitializer element is not a constant expression [enabled by default]
+  static float rh_const = powf(2,20) / 100.0;
+
+[01;32m[K                          ^[m[K
+gcc -Wall -std=c99 -lm -c colors.c
+gcc -Wall -std=c99 -lm -c hw4_p1.c
+gcc -Wall -std=c99 -lm -c LinkedList.c
+gcc -Wall -std=c99 -lm -o test_problem3 test_iom361_r2.o float_rndm.o iom361_r2.o colors.o hw4_p1.o LinkedList.o
+bash-4.2$ ./test_problem3 
+ECE 361 - Test ECE 361 IO Module(roy.kravitz@pdx.edu)
+Current working directory: /home/mosiah/common/Desktop/ECE 361 Folder/ECE361/HW4
+
+Test 1: Initialize and read the I/O registers
+  ____  ____  ____  ____
+RedDC= 0% (  0), GrnDC= 0% (  0), BluDC= 0% (  0)	Enable=OFF
+
+
+Reading I/O register 0, value: 00000000
+Reading I/O register 1, value: 00000000
+Reading I/O register 2, value: 00000000
+Reading I/O register 3, value: 0005E147
+Reading I/O register 4, value: 000C0000
+Reading I/O register 5, value: 11111111
+Reading I/O register 6, value: 22222222
+Reading I/O register 7, value: 33333333
+
+Test 2: Test the switches and leds
+	setting switches to     A5A5
+  o_o_  _o_o  o_o_  _o_o
+	setting switches to     5A5A
+  _o_o  o_o_  _o_o  o_o_
+	setting switches to     FFFF
+  oooo  oooo  oooo  oooo
+	setting switches to        0
+  ____  ____  ____  ____
+
+Test 3: Test the RGB LED
+RedDC=67% (171), GrnDC=72% (186), BluDC=98% (252)	Enable=ON
+
+RedDC=21% ( 56), GrnDC= 1% (  3), BluDC=47% (120)	Enable=OFF
+
+
+Test 4: Test the sensor
+Temperature: 10.0C(0004CCCC), Relative Humidity: 63.0%(000A147A)
+
+Test 5: Test the random sensor value function
+Temperature: 43.2C(00077546), Relative Humidity: 82.8%(000D4070)
+
+Test 5: Try a 2nd set of random numbers
+Temperature: 42.9C(00076E6C), Relative Humidity: 82.1%(000D2207)
+bash-4.2$ make clean
+rm -f *.o problem1 problem2 problem3 test_problem1a test_problem1b test_problem3
+bash-4.2$ make problem3
+gcc -Wall -std=c99 -lm -c hw4_p3.c
+[01m[Khw4_p3.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[Khw4_p3.c:214:6:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Khumid_node_index[m[K’ set but not used [-Wunused-but-set-variable]
+  int humid_node_index; // index at which the humidity was inserted
+[01;32m[K      ^[m[K
+[01m[Khw4_p3.c:213:6:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Ktemp_node_index[m[K’ set but not used [-Wunused-but-set-variable]
+  int temp_node_index; // index at which the temperature was inserted
+[01;32m[K      ^[m[K
+gcc -Wall -std=c99 -lm -c float_rndm.c
+gcc -Wall -std=c99 -lm -c iom361_r2.c
+[01m[Kiom361_r2.c:[m[K In function ‘[01m[K_iom361_setSensor1[m[K’:
+[01m[Kiom361_r2.c:195:28:[m[K [01;35m[Kwarning: [m[Kinitializer element is not a constant expression [enabled by default]
+  static float temp_const = powf(2, 20) / 200.0;
+
+[01;32m[K                            ^[m[K
+[01m[Kiom361_r2.c:196:26:[m[K [01;35m[Kwarning: [m[Kinitializer element is not a constant expression [enabled by default]
+  static float rh_const = powf(2,20) / 100.0;
+
+[01;32m[K                          ^[m[K
+gcc -Wall -std=c99 -lm -c colors.c
+gcc -Wall -std=c99 -lm -c hw4_p1.c
+gcc -Wall -std=c99 -lm -c LinkedList.c
+gcc -Wall -std=c99 -lm -o problem3 hw4_p3.o float_rndm.o iom361_r2.o colors.o hw4_p1.o LinkedList.o
+bash-4.2$ ./problem3 
+Sorting random arrays of temperatures and humidities (mosiah@pdx.edu)
+Current working directory: /home/mosiah/common/Desktop/ECE 361 Folder/ECE361/HW4
+
+Test 1: Initialize and read the I/O registers
+  ____  ____  ____  ____
+RedDC= 0% (  0), GrnDC= 0% (  0), BluDC= 0% (  0)	Enable=OFF
+
+
+Reading I/O register 0, value: 00000000
+Reading I/O register 1, value: 00000000
+Reading I/O register 2, value: 00000000
+Reading I/O register 3, value: 0005E147
+Reading I/O register 4, value: 000C0000
+Reading I/O register 5, value: 11111111
+Reading I/O register 6, value: 22222222
+Reading I/O register 7, value: 33333333
+SHOWING DATA...
+INFO[main()]:  Retrieved item[0] sw=0000a5a5, duty cycles= {25, 102, 128}
+INFO[main()]:  Retrieved item[1] sw=00005a5a, duty cycles= {128, 128, 128}
+INFO[main()]:  Retrieved item[2] sw=0000ffff, duty cycles= {255, 255, 255}
+INFO[main()]:  Retrieved item[3] sw=00000000, duty cycles= {0, 0, 0}
+INFO[main()]:  Retrieved item[4] sw=0000ece3, duty cycles= {30, 60, 90}
+INFO[main()]:  Retrieved item[5] sw=000032fe, duty cycles= {135, 143, 234}
+INFO[main()]:  Retrieved item[6] sw=0000d376, duty cycles= {205, 199, 66}
+INFO[main()]:  Retrieved item[7] sw=000072a8, duty cycles= {190, 111, 250}
+INFO[main()]:  Retrieved item[8] sw=0000fc08, duty cycles= {18, 23, 114}
+INFO[main()]:  Retrieved item[9] sw=0000e3ea, duty cycles= {68, 6, 158}
+INFO(main()]: There are 10 data items to send to I/O module
+
+Test 2: Test the switches and leds
+
+SENDING ITEM 0 to I/O MODULE...
+	setting switches to     A5A5
+  o_o_  _o_o  o_o_  _o_o
+
+SENDING ITEM 1 to I/O MODULE...
+	setting switches to     5A5A
+  _o_o  o_o_  _o_o  o_o_
+
+SENDING ITEM 2 to I/O MODULE...
+	setting switches to     FFFF
+  oooo  oooo  oooo  oooo
+
+SENDING ITEM 3 to I/O MODULE...
+	setting switches to        0
+  ____  ____  ____  ____
+
+SENDING ITEM 4 to I/O MODULE...
+	setting switches to     ECE3
+  ooo_  oo__  ooo_  __oo
+
+SENDING ITEM 5 to I/O MODULE...
+	setting switches to     32FE
+  __oo  __o_  oooo  ooo_
+
+SENDING ITEM 6 to I/O MODULE...
+	setting switches to     D376
+  oo_o  __oo  _ooo  _oo_
+
+SENDING ITEM 7 to I/O MODULE...
+	setting switches to     72A8
+  _ooo  __o_  o_o_  o___
+
+SENDING ITEM 8 to I/O MODULE...
+	setting switches to     FC08
+  oooo  oo__  ____  o___
+
+SENDING ITEM 9 to I/O MODULE...
+	setting switches to     E3EA
+  ooo_  __oo  ooo_  o_o_
+
+Test 3: Test the RGB LED
+
+SENDING ITEM 0 to I/O MODULE...
+RedDC= 9% ( 25), GrnDC=40% (102), BluDC=50% (128)	Enable=ON
+
+
+SENDING ITEM 1 to I/O MODULE...
+RedDC=50% (128), GrnDC=50% (128), BluDC=50% (128)	Enable=ON
+
+
+SENDING ITEM 2 to I/O MODULE...
+RedDC=100% (255), GrnDC=100% (255), BluDC=100% (255)	Enable=ON
+
+
+SENDING ITEM 3 to I/O MODULE...
+RedDC= 0% (  0), GrnDC= 0% (  0), BluDC= 0% (  0)	Enable=ON
+
+
+SENDING ITEM 4 to I/O MODULE...
+RedDC=11% ( 30), GrnDC=23% ( 60), BluDC=35% ( 90)	Enable=ON
+
+
+SENDING ITEM 5 to I/O MODULE...
+RedDC=52% (135), GrnDC=56% (143), BluDC=91% (234)	Enable=ON
+
+
+SENDING ITEM 6 to I/O MODULE...
+RedDC=80% (205), GrnDC=78% (199), BluDC=25% ( 66)	Enable=ON
+
+
+SENDING ITEM 7 to I/O MODULE...
+RedDC=74% (190), GrnDC=43% (111), BluDC=98% (250)	Enable=ON
+
+
+SENDING ITEM 8 to I/O MODULE...
+RedDC= 7% ( 18), GrnDC= 9% ( 23), BluDC=44% (114)	Enable=ON
+
+
+SENDING ITEM 9 to I/O MODULE...
+RedDC=26% ( 68), GrnDC= 2% (  6), BluDC=61% (158)	Enable=ON
+
+
+Test 4: Test the sensor
+Temperature: 10.0C(0004CCCC), Relative Humidity: 63.0%(000A147A)
+
+Test 5: Test the random sensor value function
+Temperature: 50.0C(000800C9), Relative Humidity: 79.1%(000CA983)
+
+Test 5: Try a 2nd set of random numbers
+Temperature: 42.4C(0007654A), Relative Humidity: 76.5%(000C3CE1)
+
+Random Readings
+Retrieved reading[0] temp=51.4C(00081C5B), humidity=84.8%(000D92F8)
+Retrieved reading[1] temp=47.0C(0007C372), humidity=79.0%(000CA58C)
+Retrieved reading[2] temp=48.7C(0007E475), humidity=77.6%(000C697A)
+Retrieved reading[3] temp=49.0C(0007EBFD), humidity=87.2%(000DF2E0)
+Retrieved reading[4] temp=49.5C(0007F4C2), humidity=81.0%(000CF424)
+Retrieved reading[5] temp=51.4C(00081D1A), humidity=86.6%(000DDA94)
+Retrieved reading[6] temp=45.0C(000798BC), humidity=81.5%(000D0A60)
+Retrieved reading[7] temp=45.2C(00079D17), humidity=86.7%(000DE11C)
+
+
+Sorted Temps: (low to high)
+	T[0] = 45.0C (000798BC)
+	T[1] = 45.2C (00079D17)
+	T[2] = 47.0C (0007C372)
+	T[3] = 48.7C (0007E475)
+	T[4] = 49.0C (0007EBFD)
+	T[5] = 49.5C (0007F4C2)
+	T[6] = 51.4C (00081C5B)
+	T[7] = 51.4C (00081D1A)
+Average Temperature = 48.3882C
+
+Sorted Humidities: (low to high)
+	H[0] = 77.6% (000C697A)
+	H[1] = 79.0% (000CA58C)
+	H[2] = 81.0% (000CF424)
+	H[3] = 81.5% (000D0A60)
+	H[4] = 84.8% (000D92F8)
+	H[5] = 86.6% (000DDA94)
+	H[6] = 86.7% (000DE11C)
+	H[7] = 87.2% (000DF2E0)
+Average Humidity = 83.0538%
+bash-4.2$ echo "One more run to demonstrate re[Kandom values"
+One more run to demonstrate random values
+bash-4.2$ echo "One more run to demonstrate random values"
+[C[C[C[C[C[C[C[C[C[C./problem3 [K
+Sorting random arrays of temperatures and humidities (mosiah@pdx.edu)
+Current working directory: /home/mosiah/common/Desktop/ECE 361 Folder/ECE361/HW4
+
+Test 1: Initialize and read the I/O registers
+  ____  ____  ____  ____
+RedDC= 0% (  0), GrnDC= 0% (  0), BluDC= 0% (  0)	Enable=OFF
+
+
+Reading I/O register 0, value: 00000000
+Reading I/O register 1, value: 00000000
+Reading I/O register 2, value: 00000000
+Reading I/O register 3, value: 0005E147
+Reading I/O register 4, value: 000C0000
+Reading I/O register 5, value: 11111111
+Reading I/O register 6, value: 22222222
+Reading I/O register 7, value: 33333333
+SHOWING DATA...
+INFO[main()]:  Retrieved item[0] sw=0000a5a5, duty cycles= {25, 102, 128}
+INFO[main()]:  Retrieved item[1] sw=00005a5a, duty cycles= {128, 128, 128}
+INFO[main()]:  Retrieved item[2] sw=0000ffff, duty cycles= {255, 255, 255}
+INFO[main()]:  Retrieved item[3] sw=00000000, duty cycles= {0, 0, 0}
+INFO[main()]:  Retrieved item[4] sw=0000ece3, duty cycles= {30, 60, 90}
+INFO[main()]:  Retrieved item[5] sw=00003dda, duty cycles= {8, 182, 30}
+INFO[main()]:  Retrieved item[6] sw=00005368, duty cycles= {24, 30, 164}
+INFO[main()]:  Retrieved item[7] sw=0000f293, duty cycles= {46, 4, 138}
+INFO[main()]:  Retrieved item[8] sw=0000e7aa, duty cycles= {85, 175, 49}
+INFO[main()]:  Retrieved item[9] sw=00003245, duty cycles= {180, 98, 39}
+INFO(main()]: There are 10 data items to send to I/O module
+
+Test 2: Test the switches and leds
+
+SENDING ITEM 0 to I/O MODULE...
+	setting switches to     A5A5
+  o_o_  _o_o  o_o_  _o_o
+
+SENDING ITEM 1 to I/O MODULE...
+	setting switches to     5A5A
+  _o_o  o_o_  _o_o  o_o_
+
+SENDING ITEM 2 to I/O MODULE...
+	setting switches to     FFFF
+  oooo  oooo  oooo  oooo
+
+SENDING ITEM 3 to I/O MODULE...
+	setting switches to        0
+  ____  ____  ____  ____
+
+SENDING ITEM 4 to I/O MODULE...
+	setting switches to     ECE3
+  ooo_  oo__  ooo_  __oo
+
+SENDING ITEM 5 to I/O MODULE...
+	setting switches to     3DDA
+  __oo  oo_o  oo_o  o_o_
+
+SENDING ITEM 6 to I/O MODULE...
+	setting switches to     5368
+  _o_o  __oo  _oo_  o___
+
+SENDING ITEM 7 to I/O MODULE...
+	setting switches to     F293
+  oooo  __o_  o__o  __oo
+
+SENDING ITEM 8 to I/O MODULE...
+	setting switches to     E7AA
+  ooo_  _ooo  o_o_  o_o_
+
+SENDING ITEM 9 to I/O MODULE...
+	setting switches to     3245
+  __oo  __o_  _o__  _o_o
+
+Test 3: Test the RGB LED
+
+SENDING ITEM 0 to I/O MODULE...
+RedDC= 9% ( 25), GrnDC=40% (102), BluDC=50% (128)	Enable=ON
+
+
+SENDING ITEM 1 to I/O MODULE...
+RedDC=50% (128), GrnDC=50% (128), BluDC=50% (128)	Enable=ON
+
+
+SENDING ITEM 2 to I/O MODULE...
+RedDC=100% (255), GrnDC=100% (255), BluDC=100% (255)	Enable=ON
+
+
+SENDING ITEM 3 to I/O MODULE...
+RedDC= 0% (  0), GrnDC= 0% (  0), BluDC= 0% (  0)	Enable=ON
+
+
+SENDING ITEM 4 to I/O MODULE...
+RedDC=11% ( 30), GrnDC=23% ( 60), BluDC=35% ( 90)	Enable=ON
+
+
+SENDING ITEM 5 to I/O MODULE...
+RedDC= 3% (  8), GrnDC=71% (182), BluDC=11% ( 30)	Enable=ON
+
+
+SENDING ITEM 6 to I/O MODULE...
+RedDC= 9% ( 24), GrnDC=11% ( 30), BluDC=64% (164)	Enable=ON
+
+
+SENDING ITEM 7 to I/O MODULE...
+RedDC=18% ( 46), GrnDC= 1% (  4), BluDC=54% (138)	Enable=ON
+
+
+SENDING ITEM 8 to I/O MODULE...
+RedDC=33% ( 85), GrnDC=68% (175), BluDC=19% ( 49)	Enable=ON
+
+
+SENDING ITEM 9 to I/O MODULE...
+RedDC=70% (180), GrnDC=38% ( 98), BluDC=15% ( 39)	Enable=ON
+
+
+Test 4: Test the sensor
+Temperature: 10.0C(0004CCCC), Relative Humidity: 63.0%(000A147A)
+
+Test 5: Test the random sensor value function
+Temperature: 43.0C(00077194), Relative Humidity: 80.7%(000CE956)
+
+Test 5: Try a 2nd set of random numbers
+Temperature: 43.2C(0007740B), Relative Humidity: 82.1%(000D2445)
+
+Random Readings
+Retrieved reading[0] temp=43.2C(0007756A), humidity=74.9%(000BFD3C)
+Retrieved reading[1] temp=46.5C(0007B81D), humidity=80.3%(000CD9BE)
+Retrieved reading[2] temp=51.6C(000820EC), humidity=81.3%(000D0181)
+Retrieved reading[3] temp=43.3C(00077799), humidity=75.8%(000C2230)
+Retrieved reading[4] temp=46.6C(0007B983), humidity=72.9%(000BAB79)
+Retrieved reading[5] temp=50.3C(000805A0), humidity=75.0%(000C005C)
+Retrieved reading[6] temp=47.1C(0007C541), humidity=86.8%(000DE43D)
+Retrieved reading[7] temp=42.2C(0007608C), humidity=82.3%(000D2C10)
+
+
+Sorted Temps: (low to high)
+	T[0] = 42.2C (0007608C)
+	T[1] = 43.2C (0007756A)
+	T[2] = 43.3C (00077799)
+	T[3] = 46.5C (0007B81D)
+	T[4] = 46.6C (0007B983)
+	T[5] = 47.1C (0007C541)
+	T[6] = 50.3C (000805A0)
+	T[7] = 51.6C (000820EC)
+Average Temperature = 46.3561C
+
+Sorted Humidities: (low to high)
+	H[0] = 72.9% (000BAB78)
+	H[1] = 74.9% (000BFD3C)
+	H[2] = 75.0% (000C005C)
+	H[3] = 75.8% (000C2230)
+	H[4] = 80.3% (000CD9BE)
+	H[5] = 81.3% (000D0180)
+	H[6] = 82.3% (000D2C10)
+	H[7] = 86.8% (000DE43C)
+Average Humidity = 78.6829%
+bash-4.2$ exit
+exit
+
+*************************
+Explanation for Problem 3
+*************************
+Disclaimer:
+I reused my HW3 files as a starting point for this file, so the earlier tests 
+are irrelevant. We just care about test 4 and onwards.
+I also had thought that the problem had asked me to store the values in 
+sorted linked lists, not arrays, when I wrote this. 
+
+
+
+I started by making two linked lists. One for the temperatures and one for the humidities.
+I then used a function to make sensor readings using _iom361_setSensor1_rndm
+and stored the results in an array of structures.
+
+I then looped over that array and inserted the temperature value into the sorted
+temperature linked list and the humidity value into the sorted humidity linked list.
+
+After inserting all the values, I then went through each linked list and printed the
+contents of their nodes in order. (Because I didn't want to edit the node struct from 
+LinkedList.h, I used x_to_x_value functions to calculate the uint32 equivalents of what
+was stored. I originally wanted to store the entire reading structure in the node so I could
+access both the conventional and uint32 representations)
+As I printed the values stored inside, I summed them together so I could calculate the average 
+value across the stored readings.
+
+
+
+As can be seen in both runs, the data is successfully sorted into their respective lists and the
+average values are calculated accordingly. The readings are also randomly generated so no 
+'hard-wired' answers could be used.
+Script done on Tue 21 Nov 2023 11:08:45 PM PST

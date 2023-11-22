@@ -25,7 +25,7 @@
 
 // prototypes
 void print_dir(void);
-int calculateRPN(char* input, struct Stack* stack);
+double calculateRPN(char* input, struct Stack* stack);
 struct Stack* getNewStack(struct Stack** stack);
 
 // global debug variable
@@ -40,82 +40,114 @@ int main() {
     stack = createStack();
     //printf("initial stack pointer: %p\n", (void *) stack);
 
-	if(!debug){
-		// simple tests
-		char* result7 = "1 2 3 * + =";
-		char* result10= "1 2 + 3 4 + + =";
-		
-		//printf("%s %d\n", result7, calculateRPN(result7, stack)); 
-		assert(calculateRPN(result7, stack) == 7);
-		stack = getNewStack(&stack);
-		
-		//printf("%s %d\n", result10, calculateRPN(result10, stack)); 
-		assert(calculateRPN(result10, stack) == 10);
-		stack = getNewStack(&stack);
-		
-		// sign tests
-		char* result_n8 = "5 8 * 4 9 - / =";
-		char* result8 = "5 8 * 9 4 - / =";
-		char* result8_2 = "5 -8 * 4 9 - / =";
-		char* result_n15 = "-5 -10 + -5 -5- + ="; 
-		// -5 + -10 -> -15; -5 - -5 -> 0; -15 + 0 -> -15
-		
-		//printf("%s %d\n", result_n8, calculateRPN(result_n8, stack)); 
-		assert(calculateRPN(result_n8, stack) == -8);
-		stack = getNewStack(&stack);
 
-		//printf("%s %d\n", result8, calculateRPN(result8, stack)); 
-		assert(calculateRPN(result8, stack) == 8);
-		stack = getNewStack(&stack);
 
-		//printf("%s %d\n", result8_2, calculateRPN(result8_2, stack)); 
-		assert(calculateRPN(result8_2, stack) == 8); 
-		stack = getNewStack(&stack);
-		
-		//printf("%s %d\n", result_n15, calculateRPN(result_n15, stack)); 
-		assert(calculateRPN(result_n15, stack) == -15); 
-		stack = getNewStack(&stack);
-		
-		// fractional tests
-		char* result1 = " 2 2 4 / * =";		// 2/4 -> 0 : 2*0 -> 0
-		char* result_n3 = " 3 2 / 9 2 / - =";	// 9/2 -> 4 : 1-4 -> -3
-		
-		//assert(calculateRPN(result1, stack) == 1);
-		//assert(calculateRPN(result1, stack) == 1);	
-		// I realized that push is demoting the data from a double into a long int :( 
-		//fractional results are not possible with the given prototypes in the stackADT header.
-		
 
-		// power tests
-		char* result25 = " 5 2 ^ = ";
-		char* result27 = " 3 3 ^ = ";
+	debug ? printf("Showing output of asserts\n\n"): 0; 
 		
-		//printf("%s %d\n", result25, calculateRPN(result25, stack)); 
-		assert(calculateRPN(result25, stack) == 25);
-		stack = getNewStack(&stack);
-		
-		//printf("%s %d\n", result27, calculateRPN(result27, stack)); 
-		assert(calculateRPN(result27, stack) == 27);
-		stack = getNewStack(&stack);
-	}
+	// simple tests
+	char* result7 = "1 2 3 * + =";
+	char* result10= "1 2 + 3 4 + + =";
+
+	(debug) ? (printf("%s\n", result7), printf("result = %g\n\n", calculateRPN(result7, stack))) : 
+	assert(calculateRPN(result7, stack) == 7);
+	stack = getNewStack(&stack);
+
+	(debug) ? (printf("%s\n", result10), printf("result = %g\n\n", calculateRPN(result10, stack))) : 
+	assert(calculateRPN(result10, stack) == 10);
+	stack = getNewStack(&stack);
+
+	// sign tests
+	char* result_n8 = "5 8 * 4 9 - / =";
+	char* result8 = "5 8 * 9 4 - / =";
+	char* result8_2 = "5 -8 * 4 9 - / =";
+	char* result_n15 = "-5 -10 + -5 -5- + ="; 
+
+	(debug) ? (printf("%s\n", result_n8), printf("result = %g\n\n", calculateRPN(result_n8, stack))) : 
+	assert(calculateRPN(result_n8, stack) == -8);
+	stack = getNewStack(&stack);
+
+	(debug) ? (printf("%s\n", result8), printf("result = %g\n\n", calculateRPN(result8, stack))) : 
+	assert(calculateRPN(result8, stack) == 8);
+	stack = getNewStack(&stack);
+
+	(debug) ? (printf("%s\n", result8_2), printf("result = %g\n\n", calculateRPN(result8_2, stack))) : 
+	assert(calculateRPN(result8_2, stack) == 8);
+	stack = getNewStack(&stack);
+
+	(debug) ? (printf("%s\n", result_n15), printf("result = %g\n\n", calculateRPN(result_n15, stack))) : 
+	assert(calculateRPN(result_n15, stack) == -15);
+	stack = getNewStack(&stack);
+
+	// fractional tests
+	char* result1 = " 2 2 4 / * =";		
+	char* result_n3 = " 3 2 / 9 2 / - =";	
+
+	(debug) ? (printf("%s\n", result1), printf("result = %g\n\n", calculateRPN(result1, stack))) : 
+	assert(calculateRPN(result1, stack) == 1);
+	stack = getNewStack(&stack);
+
+	(debug) ? (printf("%s\n", result_n3), printf("result = %g\n\n", calculateRPN(result_n3, stack))) : 
+	assert(calculateRPN(result_n3, stack) == -3);
+	stack = getNewStack(&stack);
+
+
+	// power tests
+	char* result25 = " 5 2 ^ = ";
+	char* result27 = " 3 3 ^ = ";
+
+	(debug) ? (printf("%s\n", result25), printf("result = %g\n\n", calculateRPN(result25, stack))) : 
+	assert(calculateRPN(result25, stack) == 25);
+	stack = getNewStack(&stack);
+
+	(debug) ? (printf("%s\n", result27), printf("result = %g\n\n", calculateRPN(result27, stack))) : 
+	assert(calculateRPN(result27, stack) == 27);
+	stack = getNewStack(&stack);
 	
+	
+	// Calculate user input
     char *input = malloc(100 * sizeof(char));
     do{
 		// Get input from user
 		printf("Enter a string of numbers and operators: ");
 		fgets(input, 100, stdin);
+		
+		// remove newline
 		input[strcspn(input, "\n")] = 0;
 		
+		// trim input after '=' character if it exists
+		char* equals_sign = strchr(input, '=');
+		if (equals_sign != NULL) {
+			*(equals_sign+1) = '\0';
+		}
+		
 		// Perform the calculations
-		printf("%s %d\n", input, calculateRPN(input, stack)); 
+		double result = calculateRPN(input, stack);
+		
+		// Check for errors/exit codes
+		if (isnan(result)) {
+			// user entered invalid character
+			break;
+		}
+		else if (result == HUGE_VAL) {
+			// user entered invalid expression
+			stack = getNewStack(&stack);
+			continue;
+		}
+
+		// Display output to user and create new stack
+		printf("%s %g\n", input, result); 
 		stack = getNewStack(&stack);
-	} while((strcmp(input, "q") != 0) && (strcmp(input, "Q") != 0)); //exit on q/Q
+	} while(true); //exit on invalid character
 
+	deleteStack(stack);
     return 0;
-
 }
 
-
+/**
+ * print_dir - prints the current working directory
+ * 
+ */
 void print_dir(void) {
     errno = 0;
     char *buf = getcwd(NULL, 0);    // allocates a buffer to hold the path   
@@ -130,16 +162,23 @@ void print_dir(void) {
     printf("\n");
 }
 
-int calculateRPN(char* input, struct Stack* stack) {
+/**
+ * calculateRPN - calculates the result of a string of numbers and operators
+ * 
+ * @param input - the string of numbers and operators
+ * @param stack - the stack to use for the calculation
+ * @return the result of the calculation
+ *
+ * Description: 
+ * This function takes in a string of numbers and operators and calculates the result of the expression.
+ * It uses a stack to store the numbers and perform the operations.
+ *
+ */
+double calculateRPN(char* input, struct Stack* stack) {
      //echo input
      //printf("You input: %s\n", input);
      
      //debug = true;
-     
-     // Check if user is trying to quit
-	if ((strcmp(input, "q") == 0) || (strcmp(input, "Q") == 0)){
-		return INT_MIN;
-	}
     	
      // loop through the string of numbers and operators 
      //check that integer division doesn't break it
@@ -153,7 +192,7 @@ int calculateRPN(char* input, struct Stack* stack) {
         // if the character is a number, push it onto the stack
         else if (input[i] >= '0' && input[i] <= '9') {
             
-    		int number = (input[i] - '0');
+    		double number = (input[i] - '0');
     		i++; //look at next character
 			while (input[i] >= '0' && input[i] <= '9') {
 		    	number = number * 10 + (input[i] - '0');
@@ -161,13 +200,16 @@ int calculateRPN(char* input, struct Stack* stack) {
 			}
 			
 			// Finished getting multi-digit number, push to stack
-			push(stack, number);
+			//printf("%lf\n", number);
+			push(stack, (double) number);
+			//printf("post-push (initial): %lf\n", peek(stack));
 			i--; // decrement i because the outer loop will increment it
 			continue;
 		}
         
         else if (input[i] == '=') {
         	//printf("Finished Calculating\n");
+			//printf("Peeked: %lf\n", peek(stack));
         	break;
         }
         // if the character is an operator, pop two numbers off the stack and
@@ -179,7 +221,7 @@ int calculateRPN(char* input, struct Stack* stack) {
             if (input[i] == '-' && input[i+1] >= '0' && input[i+1] <= '9') {
                 
                 // store initial number 
-                int number = (input[++i] - '0');
+                double number = (input[++i] - '0');
                 
     			i++; //look at next character
 				while (input[i] >= '0' && input[i] <= '9') {
@@ -189,7 +231,7 @@ int calculateRPN(char* input, struct Stack* stack) {
 		    		
 				}
                 
-                push(stack, number * -1);	// Store result as negative number
+                push(stack, (double) number * -1);	// Store result as negative number
                 i--;    // decrement i because the outer loop will increment it
                 continue;
             }
@@ -197,14 +239,14 @@ int calculateRPN(char* input, struct Stack* stack) {
             // check if there are at least two numbers on the stack
             if (size(stack) < 2) {
                 printf("Invalid expression\n");
-                return INT_MIN;
+                return HUGE_VAL;
             }
             
             // pop the two numbers off the stack
             double num2 = pop(stack);	//added to stack second
             double num1 = pop(stack);	//added to stack first
             double quotient;
-            (!debug) ? 1+1 :printf("num1: %lf num2: %lf\n", num1, num2);
+            //printf("num1: %lf num2: %lf\n", num1, num2);
             
             //printf("Step %d:  ", i);
             // perform the operation
@@ -227,7 +269,7 @@ int calculateRPN(char* input, struct Stack* stack) {
                 	(!debug) ? 1+1 :printf("%g / %g = %g\n", num1, num2, quotient);
                 	//printf("Pre-push: %lf\n", quotient);
                     push(stack, (double) quotient);
-                    //printf("post-push: %ld\n", peek(stack));
+                    //printf("post-push: %lf\n", peek(stack));
                     
                     break;
                 case '^':
@@ -236,11 +278,11 @@ int calculateRPN(char* input, struct Stack* stack) {
                     break;
             }
         }
-        // if the character is not a number or operator, print an error
+        // if the character is not a number or operator, print an error and exit
         else {
-            printf("Invalid character found: %c\n", input[i]);
-            printf("Has value: %d\n", input[i]);
-            
+            //printf("Invalid character found: %c\n", input[i]);
+            //printf("Has value: %d\n", input[i]);
+            return NAN;
         }
     }
     
@@ -250,8 +292,19 @@ int calculateRPN(char* input, struct Stack* stack) {
 
 }
 
+/**
+ * getNewStack - deletes the old stack and creates a new one
+ * 
+ * @param stack - the stack to delete
+ * @return the new stack
+ *
+ * Description: 
+ * This function deletes the old stack and creates a new one.
+ *
+ */
 struct Stack* getNewStack(struct Stack** stack) {
     deleteStack(*stack);
     *stack = createStack();
     return *stack;
     }
+
