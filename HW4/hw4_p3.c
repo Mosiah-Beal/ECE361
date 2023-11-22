@@ -59,8 +59,9 @@ uint32_t* io_base;
 iodata_t data[MAX_DATA_ITEMS];					// array to hold switch and duty cycle data
 sensor_data_t sensor_data[NUM_READINGS];		// array to hold sensor data
 
-LinkedListPtr_t sorted_temps = createLList();	// linked list to hold sorted temperatures
-LinkedListPtr_t sorted_humids = createLList();	// linked list to hold sorted humidities
+LinkedListPtr_t sorted_temps, sorted_humids;
+sorted_temps = createLList();	// linked list to hold sorted temperatures
+sorted_humids = createLList();	// linked list to hold sorted humidities
 
 // main()
 int main() {
